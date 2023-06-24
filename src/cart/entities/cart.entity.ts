@@ -1,25 +1,46 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { User } from "src/auth/entities/user.entity";
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { CartItem } from "./cart-item.entity";
 
 
 @Entity({name:'cart'})
 export class Cart {
-    
-    @ApiProperty()
-    @PrimaryGeneratedColumn('uuid')
-    productId:string;
 
-    @ApiProperty()
-    @Column('text',)
-    quantity: string;
+@PrimaryGeneratedColumn('uuid')
+  id: number;
+
+  @ManyToOne(
+    type => User,
+    user => user.cart)
+  user: User;
+
+  @OneToMany(
+    type => CartItem, 
+    cartItem => cartItem.cart, 
+    { cascade: true })
+  items: CartItem[];
+
+  @Column({ default: false })
+  purchased: boolean;
+}
+
+
+    
+    // @ApiProperty()
+    // @PrimaryGeneratedColumn('uuid')
+    // productId:string;
+
+    // @ApiProperty()
+    // @Column('text',)
+    // quantity: string;
   
-    @ApiProperty()
-    @ManyToOne(
-        () => User,
-        (user)=>user.car
-    )
-    user:User
+    // @ApiProperty()
+    // @ManyToOne(
+    //     () => User,
+    //     (user)=>user.car
+    // )
+    // user:User
 
 
    
@@ -62,4 +83,4 @@ export class Cart {
     //     default:[],
     // })
     // tags?:string[]; 
-}
+//}
