@@ -80,7 +80,8 @@ export class Product {
     )
     cartItems?: User
 
-
+   
+   
 
 //verificamos si el SLUG existe y que cumpla las reglas 
  @BeforeInsert()

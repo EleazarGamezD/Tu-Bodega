@@ -38,7 +38,6 @@ export class AuthController {
   testingPrivateRoute(
     @Req() request: Express.Request,
     @GetUser() user : User,
-    // @GetUser() userName : User,
     @GetUser('email') userEmail:string,
     @RawHeaders() rawHeaders : string[],  // custom decorador que trae los cabezales
     @Headers() headers: IncomingHttpHeaders // decorador que trae los cabezales (función ya incluida en nest)

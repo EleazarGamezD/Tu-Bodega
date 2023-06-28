@@ -1,12 +1,12 @@
 import { Product } from "src/products/entities/product.entity";
-import { BeforeInsert, BeforeUpdate, Column, Entity,  OneToMany,  PrimaryGeneratedColumn } from "typeorm";
+import { BeforeInsert, BeforeUpdate, Column, Entity,  OneToMany,  OneToOne,  PrimaryGeneratedColumn } from "typeorm";
 import { UserDetails } from './user-details.entity';
 import { ApiProperty } from "@nestjs/swagger";
 import { Cart } from "src/cart/entities/cart.entity";
 import { Order } from "src/orders/entities/order.entity";
 
 
-@Entity('users')
+@Entity('user')
 export class User {
     
     @PrimaryGeneratedColumn('uuid')
@@ -49,19 +49,16 @@ export class User {
     details?:UserDetails[];
        
     
-    //relacion uno a muchos con la tabla Carro de compras 
-    @OneToMany(
-        ()=> Cart,
-        (cart) => cart.user,
-        {cascade:true}
-    )   
-    cart?:Cart;
+    //relacion uno uno con la tabla Carro de compras 
+      @OneToOne(() => Cart,
+       cart => cart.user)
+       cart: Cart;
 
     //relacion uno a muchos con la tabla Ordenes
      @OneToMany(
         ()=> Order,
         (orders) => orders.user,
-        {cascade:true}
+        
     )   
     orders?:Order;
 

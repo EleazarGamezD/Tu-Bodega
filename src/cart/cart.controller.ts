@@ -1,46 +1,34 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Req, UseGuards } from '@nestjs/common';
 import { CartService } from './cart.service';
-import { CreateCartDto } from './dto/create-cart.dto';
+import { CreateCartItemDto } from './dto/create-cart.dto';
 import { UpdateCartDto } from './dto/update-cart.dto';
 import { ApiTags } from '@nestjs/swagger';
-import { Auth, GetUser } from 'src/auth/decorator';
+import { Auth, GetUser, RawHeaders } from 'src/auth/decorator';
 import { ValidRoles } from 'src/auth/interfaces';
 import { User } from 'src/auth/entities/user.entity';
+import { Order } from 'src/orders/entities/order.entity';
+import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('Cart')
 @Controller('cart')
 export class CartController {
-  constructor(private readonly cartService: CartService) {}
+  constructor(private readonly cartService: CartService
+    
+    ) {}
 
-  @Post()
-  create(@Body() createCartDto: CreateCartDto) {
-    return this.cartService.create(createCartDto);
-  }
 
-  @Get()
-  findAll() {
-    return this.cartService.findAll();
-  }
+  @Post('place-order')
+  @UseGuards(AuthGuard())
+   async purchaseCart( 
+    @GetUser() user : User,): Promise<Order> {   
+    return this.cartService.placeOrder(user)
+    }
 
-  @Get(':id')
-  @Auth(ValidRoles.user)
-  findOne(@Param('id') id: string) {
-    return this.cartService.findOne(+id);
-  }
-
-  @Patch(':id')
-   @Auth(ValidRoles.user)
-  update(@Param('id') id: string, 
-  @Body() updateCartDto: UpdateCartDto,
-  @GetUser() user:User,) {
-    return this.cartService.update(+id, updateCartDto);
-  }
-
-  @Delete(':id')
-  @Auth(ValidRoles.user)
-  remove(
-  @Param('id') id: string,
-  @GetUser() user:User, ) {
-    return this.cartService.remove(+id);
+   @Post('add-item')
+   @UseGuards(AuthGuard())
+   addItemToCart(
+    @GetUser() user : User,
+    @Body() createCartDto: CreateCartItemDto) {
+    return this.cartService.addItemToCart(createCartDto,user);
   }
 }

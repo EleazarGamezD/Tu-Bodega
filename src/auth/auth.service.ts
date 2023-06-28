@@ -26,8 +26,8 @@ export class AuthService {
 
   async create(createUserDto:CreateUserDto) {
     try{
-      const{address , city , phone, country}= createUserDto
-      const {password, ...userData} = createUserDto
+      const{address , city , phone, country, password, ...userData}= createUserDto
+      
       if (!password) {
       throw new Error("Password is required");
       }

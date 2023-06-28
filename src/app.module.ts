@@ -43,7 +43,7 @@ import { CartModule } from './cart/cart.module';
  rootPath: join(__dirname,'..','public'),
 }),
    AuthModule,
-   MessagesWsModule,
+  //  MessagesWsModule, // deshabilitado el modudolu WebSocket para mensajes 
    OrdersModule,
    CartModule
   ],
