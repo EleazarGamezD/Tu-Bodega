@@ -7,6 +7,7 @@ import { User } from './entities/user.entity';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
 import { UserDetails } from './entities/user-details.entity';
 import { Repository } from 'typeorm';
+import { UserRolesGuard } from './guards/user-role/user-role.guard';
 
 @Injectable()
 export class AuthService {
@@ -55,7 +56,7 @@ export class AuthService {
       return {...userData, token: this.getJwtToken({id: userData.email})}
     }
     catch(error){
-      console.log(error)
+      // console.log(error)
       this.handleException(error)
     }
     
@@ -66,24 +67,21 @@ export class AuthService {
       const {password, email, userName}=loginUserDto
       const user = await this.userRepository.findOne({
         where: {email, userName},
-        select: {email:true, password:true, id:true,  userName:true } 
+        select: {email:true, password:true, id:true,  userName:true, roles:true, isActive:true} 
       })
       if(!user)
       throw new UnauthorizedException('Credentials are not valid (Email or UserName ) ')
     
-      
-
       if(!bcrypt.compareSync(password, user.password))
       throw new UnauthorizedException('Credentials are not valid (password) ')
       
-      // console.log({user})
+      // console.log(user)
 
-      return {
-        ...user,
-        token: this.getJwtToken({id: user.id})
+      return { ...user,
+              token: this.getJwtToken({id: user.id})
              }
     } catch (error) {
-      console.log(error)
+      // console.log(error)
       this.handleException(error)      
     }
 
@@ -106,7 +104,8 @@ private getJwtToken (payload:JwtPayload){
 // creacion de metodo privado de manejo de errores 
   private handleException (error:any):never  {
     if (error.code === '23505')
-    {console.log (error)
+    {
+      // console.log (error)
     throw new BadGatewayException(error.detail);}
 
     this.logger.error(error)

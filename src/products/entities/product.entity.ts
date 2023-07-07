@@ -1,10 +1,11 @@
 import { ApiProperty } from "@nestjs/swagger";
 
-import { BeforeInsert, BeforeUpdate, Column, Entity,  ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { BeforeInsert, BeforeUpdate, Column, Entity,  ManyToMany,  ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { ProductImage } from './product-image.entity';
 import { User } from "src/auth/entities/user.entity";
 import { OrderItem } from "src/orders/entities/order-item.entity";
 import { CartItem } from "src/cart/entities/cart-item.entity";
+
 
 
 
@@ -62,23 +63,23 @@ export class Product {
     @ManyToOne(
         ()=>User,
         (user)=> user.product,
-        {eager:true}
+        
     )
     user: User
     
-     @ManyToOne(
+    @ManyToOne(
         ()=>OrderItem,
         (orderItems)=> orderItems.product,
-        {eager:true}
+       
     )
-    orderItems?: User
+    orderItems: OrderItem[]
     
-      @ManyToOne(
+    @ManyToOne(
         ()=>CartItem,
         (cartItems)=> cartItems.product,
-        {eager:true}
+       
     )
-    cartItems?: User
+    cartItems: CartItem[]
 
    
    

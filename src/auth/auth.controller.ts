@@ -33,24 +33,28 @@ export class AuthController {
    return this.authService.checkAuthStatus(user)
   }
  
-  @Get('private')
-  @UseGuards(AuthGuard())
-  testingPrivateRoute(
-    @Req() request: Express.Request,
-    @GetUser() user : User,
-    @GetUser('email') userEmail:string,
-    @RawHeaders() rawHeaders : string[],  // custom decorador que trae los cabezales
-    @Headers() headers: IncomingHttpHeaders // decorador que trae los cabezales (función ya incluida en nest)
-  ){
-      return {
-      ok:true,
-      message: 'hola mundo Private',
-      user,
-      userEmail,
-      rawHeaders,
-      headers,
-    }
-  }
+
+
+
+  
+  // @Get('private')
+  // @UseGuards(AuthGuard())
+  // testingPrivateRoute(
+  //   @Req() request: Express.Request,
+  //   @GetUser() user : User,
+  //   @GetUser('email') userEmail:string,
+  //   @RawHeaders() rawHeaders : string[],  // custom decorador que trae los cabezales
+  //   @Headers() headers: IncomingHttpHeaders // decorador que trae los cabezales (función ya incluida en nest)
+  // ){
+  //     return {
+  //     ok:true,
+  //     message: 'hola mundo Private',
+  //     user,
+  //     userEmail,
+  //     rawHeaders,
+  //     headers,
+  //   }
+  // }
 
 
 //  @Get('private2')

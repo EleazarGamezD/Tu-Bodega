@@ -45,7 +45,8 @@ import { CartModule } from './cart/cart.module';
    AuthModule,
   //  MessagesWsModule, // deshabilitado el modudolu WebSocket para mensajes 
    OrdersModule,
-   CartModule
+   CartModule,
+   OrdersModule
   ],
   
 })

@@ -57,9 +57,7 @@ export class User {
     //relacion uno a muchos con la tabla Ordenes
      @OneToMany(
         ()=> Order,
-        (orders) => orders.user,
-        
-    )   
+        (orders) => orders.user,)   
     orders?:Order;
 
      //relacion uno a muchos con la tabla Productos

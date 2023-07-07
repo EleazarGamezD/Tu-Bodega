@@ -27,16 +27,8 @@ import { UserDetails } from './entities/user-details.entity';
               }
         }
     })
-
-    // JwtModule.register({
-    //   secret: process.env.JWT_SECRET,
-    //   signOptions:{
-    //     expiresIn:'2h'
-    //   }
-    // })
   ],
-    
-
+ 
   exports: [TypeOrmModule,JwtStrategy, PassportModule,JwtModule ]
   })
 export class AuthModule {}

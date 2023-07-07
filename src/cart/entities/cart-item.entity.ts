@@ -14,10 +14,10 @@ export class CartItem {
   @JoinColumn({ name: 'cartId' })
   cart: Cart;
   
-  @ManyToOne(() => Product, 
-  product => product.cartItems)
-  @JoinColumn({ name: 'producctId' })
-  product: Product;
+@ManyToOne(() => Product, 
+  product => product.cartItems, { eager: true })
+@JoinColumn({ name: 'productId' })
+product: Product;
   
  
   @Column({ type: 'decimal', precision: 10, scale: 2, default:'0.00' })
@@ -25,7 +25,11 @@ export class CartItem {
   
   @Column()
   quantity: number;
+  
 
+  @Column({ type: 'decimal', precision: 10, scale: 2, default:'0.00' })
+  itemAmount: number;
+  
 
 
 

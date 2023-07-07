@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger"
-import {  IsOptional, IsString, Matches, MaxLength, MinLength} from "class-validator"
+import {  IsArray, IsOptional, IsString, Matches, MaxLength, MinLength} from "class-validator"
 
 
 export class LoginUserDto{
@@ -33,4 +33,10 @@ phone:string
 @IsString()
 @IsOptional()
 direction:string
+
+@ApiProperty({   })
+@IsString()  
+@IsArray()
+@IsOptional()
+roles: string[];  
 }

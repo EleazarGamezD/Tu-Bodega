@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger"
 import { IsArray, IsOptional, IsString, Matches, MaxLength, MinLength} from "class-validator"
-import { UserDetails } from '../entities/user-details.entity';
+
 
 
 export class CreateUserDto{
@@ -59,4 +59,10 @@ country: string;
 @IsString()  
 @IsOptional()
 name: string; 
+
+@ApiProperty({   })
+@IsString()  
+@IsArray()
+@IsOptional()
+roles: string[]; 
 }

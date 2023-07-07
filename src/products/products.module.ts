@@ -8,6 +8,7 @@ import { AuthModule } from 'src/auth/auth.module';
 import { Cart } from 'src/cart/entities/cart.entity';
 import { Order } from 'src/orders/entities/order.entity';
 import { OrderItem } from 'src/orders/entities/order-item.entity';
+import { CartItem } from 'src/cart/entities/cart-item.entity';
 
 
 
@@ -15,7 +16,7 @@ import { OrderItem } from 'src/orders/entities/order-item.entity';
   controllers: [ProductsController],
   providers: [ProductsService],
   imports: [
-    TypeOrmModule.forFeature([Product,ProductImage,Order,OrderItem]), // se le indica las entities (tablas y estructas ) para que sean leidas en el proyecto.
+    TypeOrmModule.forFeature([Product,ProductImage,Order,OrderItem,Cart,CartItem]), // se le indica las entities (tablas y estructas ) para que sean leidas en el proyecto.
     AuthModule],
   exports:[ProductsService,TypeOrmModule]
 })

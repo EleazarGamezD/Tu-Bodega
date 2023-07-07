@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { BeforeInsert, BeforeUpdate, Column, Entity,   ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import {  Column, Entity,   ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { User } from "./user.entity";
 
 
@@ -32,23 +32,7 @@ export class UserDetails {
         {onDelete: 'CASCADE'}
     )
     user:User
-
-
-
-
-    // @BeforeInsert()
-    // checkFieldsBeforeInsert(){
-    //     this.address=this.address.toLowerCase().trim()
-    //     // this.city=this.city.toLowerCase().trim()
-    //     // this.country=this.country.toLowerCase().trim()
-    //     }
-
-    // @BeforeUpdate()
-    //     checkFieldsBeforeUpdate(){
-    //         this.checkFieldsBeforeInsert()
-        
-    // }
-    
+  
     
 }
 
