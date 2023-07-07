@@ -1,13 +1,17 @@
 import { User } from "src/auth/entities/user.entity";
-import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany,  PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, Generated, ManyToOne, OneToMany,  PrimaryGeneratedColumn } from "typeorm";
 import { OrderItem } from "./order-item.entity";
 
 
 @Entity({name:'order'})
 export class Order {
 
-  @PrimaryGeneratedColumn('increment')
+  @PrimaryGeneratedColumn('uuid')
   id: number;
+
+@Generated('increment')
+  @Column()
+  orderId: number;
 
   @ManyToOne(type => User, 
   user => user.orders)
