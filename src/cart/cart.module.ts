@@ -9,22 +9,30 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { ProductsModule } from 'src/products/products.module';
 import { OrdersModule } from 'src/orders/orders.module';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
   controllers: [CartController],
   providers: [CartService],
-  imports:[TypeOrmModule.forFeature([Cart,CartItem]),
-           ConfigModule, ProductsModule, OrdersModule,
-           PassportModule.register({defaultStrategy: 'jwt'}),
-           JwtModule.registerAsync({
-      imports:[ConfigModule],
-      inject:[ConfigService],
-      useFactory:(configService:ConfigService )=>{
-        return{
-        secret: configService.get('JWT_SECRET'),
-        signOptions:{ expiresIn:'2h'}}
-      }})],
-           
-  exports:[CartService,TypeOrmModule]
+  imports: [
+    TypeOrmModule.forFeature([Cart, CartItem]),
+    ConfigModule,
+    ProductsModule,
+    OrdersModule,
+    PassportModule.register({ defaultStrategy: 'jwt' }),
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => {
+        return {
+          secret: configService.get('JWT_SECRET'),
+          signOptions: { expiresIn: '2h' },
+        };
+      },
+    }),
+    AuthModule,
+  ],
+
+  exports: [CartService, TypeOrmModule],
 })
 export class CartModule {}

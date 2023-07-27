@@ -11,7 +11,7 @@ export class Order {
 
 @Generated('increment')
   @Column()
-  orderId: number;
+  orderNumber: number;
 
   @ManyToOne(type => User, 
   user => user.orders)

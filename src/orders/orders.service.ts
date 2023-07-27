@@ -28,7 +28,6 @@ constructor(
 
 async createOrder( order:Order,items): Promise<Order> {
   
-    //  console.log (items)
     // Crear la entidad de orden con los detalles proporcionados
     // Crear los items de la orden utilizando los datos proporcionados
     const orderItems = items.map(item => {

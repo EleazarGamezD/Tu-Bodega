@@ -42,7 +42,7 @@ export class CreateProductDto {
     @ApiProperty({   })
     @IsIn(['men','women','kid','unisex'])
     @IsOptional()
-    gender: string;
+    gender?: string;
 
     @ApiProperty({   })
     @IsString({each: true})

@@ -4,10 +4,9 @@ import { OrdersService } from './orders.service';
 import { ApiTags } from '@nestjs/swagger';
 import { Order } from './entities/order.entity';
 
-import { GetUser } from 'src/auth/decorator';
-import { User } from 'src/auth/entities/user.entity';
+
 import { AuthGuard } from '@nestjs/passport';
-import { OrderItem } from './entities/order-item.entity';
+
 
 @ApiTags('Orders')
 @Controller('orders')

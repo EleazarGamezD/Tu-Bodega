@@ -14,7 +14,7 @@ import { Product } from './entities/product.entity';
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
-  @Post()
+  @Post('createItem')
   @Auth(ValidRoles.admin)
   @ApiResponse({status:201, description: 'product was created', type: Product })
   @ApiResponse({status:400, description: 'Bad Request'})
