@@ -18,7 +18,7 @@ import { CartModule } from './cart/cart.module';
   imports: [
     ConfigModule.forRoot(), // para leer archivo .env
     TypeOrmModule.forRoot({
-      // linea para agregar conexion con certificado ssl
+      // linea para agregar conexión con certificado ssl
       ssl: process.env.STAGE === 'prod',
       extra: {
         ssl:
