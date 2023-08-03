@@ -4,7 +4,7 @@ import { CartItem } from 'src/cart/entities/cart-item.entity';
 import { Cart } from 'src/cart/entities/cart.entity';
 import { Repository } from 'typeorm';
 
-@Injectable()
+@Injectable()  
 export class CartRepository extends Repository<Cart> {
   constructor(
     @InjectRepository(Cart)
@@ -17,10 +17,11 @@ export class CartRepository extends Repository<Cart> {
     );
   }
 
-  public findCart(email?, userName?) {
-    return this.findOne({});
-  }
 }
+
+//extend CartITems Repository functions 
+
+@Injectable()
 export class CartItemRepository extends Repository<CartItem> {
   constructor(
     @InjectRepository(CartItem)
@@ -33,5 +34,23 @@ export class CartItemRepository extends Repository<CartItem> {
     );
   }
 
+  public createItemCart(newCart, productId, quantity, product, totalAmount) {
+    return this.create({
+      cart: newCart,
+      product: { id: productId },
+      quantity,
+      price: product.price,
+      itemAmount: totalAmount,
+    });
+  }
 
+  public saveItemCart(newCartItem) {
+    return this.save(newCartItem);
+  }
+
+  public findOneCartITem(cart,productId) {
+    return this.findOne({
+      where: { cart: { id: cart.id }, product: { id: productId } },
+    });
+  }
 }

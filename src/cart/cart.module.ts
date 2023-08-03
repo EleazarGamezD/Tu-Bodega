@@ -10,10 +10,11 @@ import { JwtModule } from '@nestjs/jwt';
 import { ProductsModule } from 'src/products/products.module';
 import { OrdersModule } from 'src/orders/orders.module';
 import { AuthModule } from 'src/auth/auth.module';
+import { CartItemRepository, CartRepository } from 'src/repositories/cart-repository';
 
 @Module({
   controllers: [CartController],
-  providers: [CartService],
+  providers: [CartService,CartRepository,CartItemRepository],  //remember add personal or extends repository's here 
   imports: [
     TypeOrmModule.forFeature([Cart, CartItem]),
     ConfigModule,

@@ -14,40 +14,37 @@ import { join } from 'path';
 import { OrdersModule } from './orders/orders.module';
 import { CartModule } from './cart/cart.module';
 
-
 @Module({
   imports: [
-  ConfigModule.forRoot(), // para leer archivo .env
-  TypeOrmModule.forRoot({    // linea para agregar conexion con certificado ssl 
-    ssl:process.env.STAGE === 'prod',
-    extra: {
-      ssl: process.env.STAGE === 'prod'
-    ? {rejectUnauthorized:false}
-    :null,
-    },
-    type: 'postgres',
-    host: process.env.DB_HOST,
-    port: +process.env.DB_PORT,
-    database: process.env.DB_NAME,
-    username: process.env.DB_USERNAME,
-    password: process.env.DB_PASSWORD,
-    autoLoadEntities: true,
-    synchronize: true,  //en producción no se activa
-
-  }),
-   ProductsModule, 
-   CommonModule, 
-   SeedModule, 
-   FilesModule,
-   ServeStaticModule.forRoot({
- rootPath: join(__dirname,'..','public'),
-}),
-   AuthModule,
-  //  MessagesWsModule, // deshabilitado el modudolu WebSocket para mensajes 
-   OrdersModule,
-   CartModule,
-   OrdersModule
+    ConfigModule.forRoot(), // para leer archivo .env
+    TypeOrmModule.forRoot({
+      // linea para agregar conexion con certificado ssl
+      ssl: process.env.STAGE === 'prod',
+      extra: {
+        ssl:
+          process.env.STAGE === 'prod' ? { rejectUnauthorized: false } : null,
+      },
+      type: 'postgres',
+      host: process.env.DB_HOST,
+      port: +process.env.DB_PORT,
+      database: process.env.DB_NAME,
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
+      autoLoadEntities: true,
+      synchronize: true, //en producción no se activa
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'public'),
+    }),
+    ProductsModule,
+    CommonModule,
+    SeedModule,
+    FilesModule,
+    AuthModule,
+    //  MessagesWsModule, // deshabilitado el modudolu WebSocket para mensajes
+    OrdersModule,
+    CartModule,
+    OrdersModule,
   ],
-  
 })
 export class AppModule {}
