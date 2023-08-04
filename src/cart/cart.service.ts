@@ -3,12 +3,10 @@ import {
   Injectable,
   InternalServerErrorException,
   Logger,
- 
 } from '@nestjs/common';
 import { MessagesWsModule } from './../messages-ws/messages-ws.module';
 
 import { CreateCartItemDto } from './dto/create-cart.dto';
-
 
 import { Cart } from './entities/cart.entity';
 import { Order } from 'src/orders/entities/order.entity';
@@ -17,7 +15,10 @@ import { ProductsService } from 'src/products/products.service';
 import { OrdersService } from 'src/orders/orders.service';
 import { GetUser } from 'src/auth/decorator';
 import { User } from 'src/auth/entities/user.entity';
-import { CartItemRepository, CartRepository } from 'src/repositories/cart-repository';
+import {
+  CartItemRepository,
+  CartRepository,
+} from 'src/repositories/cart-repository';
 
 @Injectable()
 export class CartService {
@@ -25,9 +26,8 @@ export class CartService {
   private readonly logger = new Logger('ProductService');
 
   constructor(
-    
     private readonly cartRepository: CartRepository,
-   
+
     private readonly cartItemRepository: CartItemRepository,
 
     private readonly orderService: OrdersService,
@@ -53,12 +53,21 @@ export class CartService {
       await this.cartRepository.save(newCart);
       cart = newCart;
 
-      const newCartItem = await  this.cartItemRepository.createItemCart(newCart,productId,quantity,product, totalAmount)
+      const newCartItem = await this.cartItemRepository.createItemCart(
+        newCart,
+        productId,
+        quantity,
+        product,
+        totalAmount,
+      );
       await this.cartItemRepository.save(newCartItem);
       return newCartItem;
     }
     // Verificar si el producto ya está en el carrito
-    const existingCartItem = await this.cartItemRepository.findOneCartITem(cart,productId);
+    const existingCartItem = await this.cartItemRepository.findOneCartITem(
+      cart,
+      productId,
+    );
     if (existingCartItem) {
       // Si el producto ya está en el carrito, actualizar la cantidad
       //actualizamos la cantidad el item
@@ -73,7 +82,13 @@ export class CartService {
       return existingCartItem;
     } else {
       // Si el producto no está en el carrito, crear un nuevo item
-      const newCartItem = await this.cartItemRepository.createItemCart(cart,productId,quantity,product,totalAmount,);
+      const newCartItem = await this.cartItemRepository.createItemCart(
+        cart,
+        productId,
+        quantity,
+        product,
+        totalAmount,
+      );
       await this.cartItemRepository.save(newCartItem);
       return newCartItem;
     }
@@ -158,7 +173,7 @@ export class CartService {
   private async getCartByUser(user: User): Promise<Cart> {
     // console.log (user)
     //buscamos el carro por el ID y devolvemos el carro con los Items en un arreglo relacional
-     const cart = await this.cartRepository.findOne({
+    const cart = await this.cartRepository.findOne({
       where: { user: { id: user.id } },
       relations: ['items'],
     });

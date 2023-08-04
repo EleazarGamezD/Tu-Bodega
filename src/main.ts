@@ -14,7 +14,7 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
    const config = new DocumentBuilder()
     .setTitle('tu bodega ')
-    .setDescription('Api para manejo de pequeño E-comerce')
+    .setDescription('Api para manejo de pequeño Ecomerce')
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);

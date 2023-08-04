@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  ParseUUIDPipe,
+  Query,
+} from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -16,36 +26,53 @@ export class ProductsController {
 
   @Post('createItem')
   @Auth(ValidRoles.admin)
-  @ApiResponse({status:201, description: 'product was created', type: Product })
-  @ApiResponse({status:400, description: 'Bad Request'})
-  @ApiResponse({status:403, description: 'Forbidden, Token related'})
-  create(@Body() createProductDto: CreateProductDto,
-  @GetUser() user:User,) {
+  @ApiResponse({
+    status: 201,
+    description: 'product was created',
+    type: Product,
+  })
+  @ApiResponse({ status: 400, description: 'Bad Request' })
+  @ApiResponse({ status: 403, description: 'Forbidden, Token related' })
+  create(@Body() createProductDto: CreateProductDto, @GetUser() user: User) {
     return this.productsService.create(createProductDto, user);
   }
 
   @Get()
-  findAll( @Query() paginationDto:PaginationDto) {
+  @ApiResponse({ status: 201, description: 'get All Products', type: Product })
+  @ApiResponse({ status: 400, description: 'Bad Request' })
+  @ApiResponse({ status: 403, description: 'Forbidden, Token related' })
+  findAll(@Query() paginationDto: PaginationDto) {
     return this.productsService.findAll(paginationDto);
   }
 
   @Get(':term')
-  findOne(@Param('term', ) term: string) {
+  @ApiResponse({ status: 201, description: 'Product by ${term} found', type: Product })
+  findOne(@Param('term') term: string) {
     return this.productsService.findOnePlain(term);
   }
-  
 
   @Patch(':id')
   @Auth(ValidRoles.admin)
+  @ApiResponse({ status: 201,description: 'product was updated', type: Product,})
+  @ApiResponse({ status: 400, description: 'Bad Request' })
+  @ApiResponse({ status: 403, description: 'Forbidden, Token related' })
   update(
-    @Param('id', ParseUUIDPipe) id: string, 
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() updateProductDto: UpdateProductDto,
-    @GetUser() user:User,) {
+    @GetUser() user: User,
+  ) {
     return this.productsService.update(id, updateProductDto, user);
   }
 
   @Delete(':id')
   @Auth(ValidRoles.admin)
+  @ApiResponse({
+    status: 201,
+    description: 'product was removed',
+    type: Product,
+  })
+  @ApiResponse({ status: 400, description: 'Bad Request' })
+  @ApiResponse({ status: 403, description: 'Forbidden, Token related' })
   remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.productsService.remove(id);
   }
