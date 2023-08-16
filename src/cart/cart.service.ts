@@ -1,5 +1,8 @@
 import {
   BadGatewayException,
+  BadRequestException,
+  HttpException,
+  HttpStatus,
   Injectable,
   InternalServerErrorException,
   Logger,
@@ -15,10 +18,12 @@ import { ProductsService } from 'src/products/products.service';
 import { OrdersService } from 'src/orders/orders.service';
 import { GetUser } from 'src/auth/decorator';
 import { User } from 'src/auth/entities/user.entity';
+import { STATUS_CODES } from 'http';
 import {
   CartItemRepository,
   CartRepository,
 } from 'src/repositories/cart-repository';
+import { response } from 'express';
 
 @Injectable()
 export class CartService {
@@ -99,8 +104,10 @@ export class CartService {
     try {
       // Leer el carrito y los items asociados al usuario
       const cart = await this.getCartByUser(user);
+      
       if (cart?.items == null) {
-        throw new Error('El carrito no tiene items.');
+        throw response.statusCode = 404;
+        
       }
       const items = cart.items;
 

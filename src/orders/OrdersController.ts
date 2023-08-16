@@ -1,13 +1,18 @@
-import { Controller, Post, Body, UseGuards, Get, Param, Query, HttpCode,  } from '@nestjs/common';
-import { CartItem } from "./../cart/entities/cart-item.entity";
+import {
+  Controller,
+  Post,
+  Body,
+  UseGuards,
+  Get,
+  Param,
+  Query,
+} from '@nestjs/common';
+import { CartItem } from './../cart/entities/cart-item.entity';
 import { OrdersService } from './orders.service';
 import { ApiTags } from '@nestjs/swagger';
 import { Order } from './entities/order.entity';
-
-
 import { AuthGuard } from '@nestjs/passport';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
-
 
 @ApiTags('Orders')
 @Controller('orders')
@@ -25,17 +30,12 @@ export class OrdersController {
   }
 
   @Get(':term')
-  @HttpCode(200)
   findOne(@Param('term') term: string) {
     return this.ordersService.findOneTerm(term);
   }
 
   @Get()
-  @HttpCode(200)
   findAll(@Query() paginationDto: PaginationDto) {
     return this.ordersService.findAll(paginationDto);
   }
 }
-
-
-

@@ -2,7 +2,8 @@ import {
   Controller,
   Get,
   Post,
-  Body, 
+  Body,
+  HttpCode, 
 } from '@nestjs/common';
 
 import { AuthService } from './auth.service';
@@ -21,16 +22,19 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('register')
+  @HttpCode(201)
   create(@Body() createUserDto: CreateUserDto, user: User) {
     return this.authService.create(createUserDto);
   }
 
   @Post('login')
+  @HttpCode(200)
   loginUser(@Body() loginUserDto: LoginUserDto) {
     return this.authService.login(loginUserDto);
   }
 
   @Get('check-status')
+  @HttpCode(200)
   @Auth()
   checkAuthStatus(@GetUser() user: User) {
     return this.authService.checkAuthStatus(user);

@@ -8,6 +8,7 @@ import {
   Delete,
   ParseUUIDPipe,
   Query,
+  HttpCode,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -25,6 +26,7 @@ export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
   @Post('createItem')
+  @HttpCode(201)
   @Auth(ValidRoles.admin)
   @ApiResponse({
     status: 201,
@@ -38,6 +40,7 @@ export class ProductsController {
   }
 
   @Get()
+  @HttpCode(200)
   @ApiResponse({ status: 201, description: 'get All Products', type: Product })
   @ApiResponse({ status: 400, description: 'Bad Request' })
   @ApiResponse({ status: 403, description: 'Forbidden, Token related' })
@@ -46,18 +49,29 @@ export class ProductsController {
   }
 
   @Get(':term')
-  @ApiResponse({ status: 201, description: 'Product by ${term} found', type: Product })
+  @HttpCode(200)
+  @ApiResponse({
+    status: 201,
+    description: 'Product by ${term} found',
+    type: Product,
+  })
   findOne(@Param('term') term: string) {
     return this.productsService.findOnePlain(term);
   }
 
   @Patch(':id')
+  @HttpCode(200)
   @Auth(ValidRoles.admin)
-  @ApiResponse({ status: 201,description: 'product was updated', type: Product,})
+  @ApiResponse({
+    status: 201,
+    description: 'product was updated',
+    type: Product,
+  })
   @ApiResponse({ status: 400, description: 'Bad Request' })
   @ApiResponse({ status: 403, description: 'Forbidden, Token related' })
   update(
-    @Param('id', ParseUUIDPipe) id: string,
+    @Param('id', ParseUUIDPipe)
+    id: string,
     @Body() updateProductDto: UpdateProductDto,
     @GetUser() user: User,
   ) {
@@ -65,6 +79,7 @@ export class ProductsController {
   }
 
   @Delete(':id')
+  @HttpCode(200)
   @Auth(ValidRoles.admin)
   @ApiResponse({
     status: 201,
@@ -73,7 +88,10 @@ export class ProductsController {
   })
   @ApiResponse({ status: 400, description: 'Bad Request' })
   @ApiResponse({ status: 403, description: 'Forbidden, Token related' })
-  remove(@Param('id', ParseUUIDPipe) id: string) {
+  remove(
+    @Param('id', ParseUUIDPipe)
+    id: string,
+  ) {
     return this.productsService.remove(id);
   }
 }

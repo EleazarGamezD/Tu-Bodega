@@ -15,8 +15,5 @@ export class CreateCartItemDto {
   @IsNotEmpty()
   userId: string;
   
-  // @ApiProperty({   })
-  // @IsNumber()
-  // price: number;
- 
+
 }

@@ -10,14 +10,20 @@ import { Order } from 'src/orders/entities/order.entity';
 import { OrderItem } from 'src/orders/entities/order-item.entity';
 import { CartItem } from 'src/cart/entities/cart-item.entity';
 
-
-
 @Module({
   controllers: [ProductsController],
   providers: [ProductsService],
   imports: [
-    TypeOrmModule.forFeature([Product,ProductImage,Order,OrderItem,Cart,CartItem]), // se le indica las entities (tablas y estructas ) para que sean leidas en el proyecto.
-    AuthModule],
-  exports:[ProductsService,TypeOrmModule]
+    TypeOrmModule.forFeature([
+      Product,
+      ProductImage,
+      Order,
+      OrderItem,
+      Cart,
+      CartItem,
+    ]), // se le indica las entities (tablas y estructas ) para que sean leidas en el proyecto.
+    AuthModule,
+  ],
+  exports: [ProductsService, TypeOrmModule],
 })
 export class ProductsModule {}

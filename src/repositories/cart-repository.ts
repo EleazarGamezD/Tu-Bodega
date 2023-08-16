@@ -4,7 +4,7 @@ import { CartItem } from 'src/cart/entities/cart-item.entity';
 import { Cart } from 'src/cart/entities/cart.entity';
 import { Repository } from 'typeorm';
 
-@Injectable()  
+@Injectable()
 export class CartRepository extends Repository<Cart> {
   constructor(
     @InjectRepository(Cart)
@@ -16,10 +16,9 @@ export class CartRepository extends Repository<Cart> {
       cartRepository.queryRunner,
     );
   }
-
 }
 
-//extend CartITems Repository functions 
+//extend CartITems Repository functions
 
 @Injectable()
 export class CartItemRepository extends Repository<CartItem> {
@@ -48,7 +47,7 @@ export class CartItemRepository extends Repository<CartItem> {
     return this.save(newCartItem);
   }
 
-  public findOneCartITem(cart,productId) {
+  public findOneCartITem(cart, productId) {
     return this.findOne({
       where: { cart: { id: cart.id }, product: { id: productId } },
     });

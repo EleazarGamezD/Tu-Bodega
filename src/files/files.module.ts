@@ -6,6 +6,6 @@ import { ConfigModule } from '@nestjs/config';
 @Module({
   controllers: [FilesController],
   providers: [FilesService],
-  imports:[ConfigModule] // llamamos el configmodule para que lea el archivo .env
+  imports: [ConfigModule], // llamamos el configmodule para que lea el archivo .env
 })
 export class FilesModule {}
