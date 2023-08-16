@@ -20,7 +20,6 @@ export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 
   @Post('place-order')
-  @HttpCode(201)
   @UseGuards(AuthGuard())
   async createOrder(
     @Body() order: Order,
