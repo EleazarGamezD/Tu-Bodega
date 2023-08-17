@@ -1,17 +1,10 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  HttpCode, 
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, HttpCode } from '@nestjs/common';
 
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 import { User } from './entities/user.entity';
 import { GetUser } from './decorator';
-
 
 import { Auth } from './decorator/auth.decorator';
 import { ApiTags } from '@nestjs/swagger';
@@ -39,4 +32,8 @@ export class AuthController {
   checkAuthStatus(@GetUser() user: User) {
     return this.authService.checkAuthStatus(user);
   }
+
+  //TODO hacer la funcion para traer todos los usuarios
+  //TODO hacer la funcion de edicion y eliminacion de una de las direcciones 
+  //TODO hacer la funcion para actualizar los datos de un cliente "direccion o datos personales "
 }

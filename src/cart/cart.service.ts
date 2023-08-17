@@ -1,6 +1,5 @@
 import {
   BadGatewayException,
-  HttpException,
   HttpStatus,
   Injectable,
   InternalServerErrorException,
@@ -22,9 +21,6 @@ import {
   CartItemRepository,
   CartRepository,
 } from 'src/repositories/cart-repository';
-
-
-
 @Injectable()
 export class CartService {
   // creamos variable privada logger  para manejar los errores en la consola de NEST
@@ -98,36 +94,36 @@ export class CartService {
     }
   }
 
-  //metodo cuando  el usuario realiza la compra y la enviamos a la tabla de orden
+  //method when the user makes the purchase and we send it to the order table
   async placeOrder(user: User) {
     try {
-      // Leer el carrito y los items asociados al usuario
+      // read the cart and items  associated whit the user
       const cart = await this.getCartByUser(user);
-
+      // Validate if the cart is empty
       if (!cart?.items || cart.items.length === 0) {
         return {
           statusCode: HttpStatus.NO_CONTENT,
           message: 'The Cart is Empty',
-        }
+        };
       }
       const items = cart.items;
 
-      // Calcular el totalAmount de los items
+      // Calculate totalAmount of the items
       let totalAmount = 0;
       for (const item of items) {
         totalAmount += Number(item.itemAmount); // la función Number() garantiza que los números se sumen y no que se concatenen
       }
 
-      // Crear la orden y guardarla en la base de datos
+      // Create the order and save in the database
       const order = new Order();
-      order.user = user; // Asignar el usuario correspondiente
-      order.totalAmount = totalAmount; // Asignamos el valor de la sumatoria total
+      order.user = user; // assign the current user
+      order.totalAmount = totalAmount; // we assign the value of the total summation
       // console.log (order)
 
-      // Llama al método createOrder del servicio OrdersService
+      // Call the  createOrder method of the  OrdersService service
       const createdOrder = await this.orderService.createOrder(order, items);
 
-      // Limpiar el carrito
+      //we clean the cart
       await this.clearCart(user);
 
       return createdOrder;
@@ -169,7 +165,6 @@ export class CartService {
 
   // Buscar el carrito del usuario y los items del carrito
   private async getCartByUser(user: User): Promise<Cart> {
-    // console.log (user)
     //buscamos el carro por el ID y devolvemos el carro con los Items en un arreglo relacional
     const cart = await this.cartRepository.findOne({
       where: { user: { id: user.id } },
