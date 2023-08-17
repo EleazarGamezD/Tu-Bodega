@@ -17,7 +17,11 @@ import {
 
 @Module({
   controllers: [CartController],
-  providers: [CartService, CartRepository, CartItemRepository], //remember add personal or extends repository's here
+  providers: [
+    CartService,
+    CartRepository,
+    CartItemRepository,
+  ], //remember add personal or extends repository's here
   imports: [
     TypeOrmModule.forFeature([Cart, CartItem]),
     ConfigModule,

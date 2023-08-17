@@ -1,6 +1,5 @@
 import {
   BadGatewayException,
-  BadRequestException,
   HttpException,
   HttpStatus,
   Injectable,
@@ -18,12 +17,13 @@ import { ProductsService } from 'src/products/products.service';
 import { OrdersService } from 'src/orders/orders.service';
 import { GetUser } from 'src/auth/decorator';
 import { User } from 'src/auth/entities/user.entity';
-import { STATUS_CODES } from 'http';
+
 import {
   CartItemRepository,
   CartRepository,
 } from 'src/repositories/cart-repository';
-import { response } from 'express';
+
+
 
 @Injectable()
 export class CartService {
@@ -41,7 +41,6 @@ export class CartService {
   ) {}
 
   // metodo para cargar tabla de carro de compras por usuario
-
   async addItemToCart(
     createCartItemDto: CreateCartItemDto,
     @GetUser() user: User,
@@ -104,10 +103,12 @@ export class CartService {
     try {
       // Leer el carrito y los items asociados al usuario
       const cart = await this.getCartByUser(user);
-      
-      if (cart?.items == null) {
-        throw response.statusCode = 404;
-        
+
+      if (!cart?.items || cart.items.length === 0) {
+        return {
+          statusCode: HttpStatus.NO_CONTENT,
+          message: 'The Cart is Empty',
+        }
       }
       const items = cart.items;
 
@@ -151,16 +152,6 @@ export class CartService {
     totalAmount += price * quantity;
     return totalAmount;
   }
-
-  // Metodo para calcular el total Carrito //SIN USO
-  private async calculateAmountTotal(items) {
-    // Calcular el totalAmount de los items
-    let totalAmount = 0;
-    for (const item of items) {
-      totalAmount += Number(item.itemAmount); // la función Number() garantiza que los números se sumen y no que se concatenen
-    }
-  }
-
   //meotodo para limpiar el carro del usuario
   private async clearCart(user: User) {
     // Encuentra el carrito del usuario
