@@ -35,17 +35,10 @@ export class UserDetailRepository extends Repository<UserDetails> {
     @InjectRepository(UserDetails)
     detailRepository: Repository<UserDetails>,
   ) {
-    super(
-      detailRepository.target,
-      detailRepository.manager,
-      detailRepository.queryRunner,
-    );
+    super(detailRepository.target, detailRepository.manager, detailRepository.queryRunner);
   }
 
-  //extension del método findOne del repositorio de UsersDetails
-  public findUserDetails() {
-    return this.findOne({});
-  }
+
   //extension del método save del repositorio de UsersDetails
   public saveUsersDetails(userDetails) {
     return this.save(userDetails);
