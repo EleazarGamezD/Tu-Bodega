@@ -16,6 +16,7 @@ import {
   UserDetailRepository,
   UserRepository,
 } from 'src/repositories/user-repository';
+import { PaginationDto } from 'src/common/dtos/pagination.dto';
 
 @Injectable()
 export class AuthService {
@@ -29,6 +30,19 @@ export class AuthService {
 
     private readonly jwtService: JwtService,
   ) {}
+
+  //Find All Users 
+  async findAll(paginationDto: PaginationDto) {
+    const { limit, offset } = paginationDto; //we unstructured the paginationDTO to indicate the Limit and Offset
+    const users = await this.userRepository.find({
+      take: limit,
+      skip: offset,
+      relations: {
+        details: true,
+      },
+    });
+    return users;
+  }
 
   async create(createUserDto: CreateUserDto) {
     try {
