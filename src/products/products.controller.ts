@@ -81,11 +81,7 @@ export class ProductsController {
   @Delete(':id')
   @HttpCode(200)
   @Auth(ValidRoles.admin)
-  @ApiResponse({
-    status: 201,
-    description: 'product was removed',
-    type: Product,
-  })
+  @ApiResponse({ status: 201, description: 'product was removed',type: Product,})
   @ApiResponse({ status: 400, description: 'Bad Request' })
   @ApiResponse({ status: 403, description: 'Forbidden, Token related' })
   remove(

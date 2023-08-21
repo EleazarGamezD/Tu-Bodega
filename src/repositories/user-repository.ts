@@ -13,9 +13,9 @@ export class UserRepository extends Repository<User> {
     super(repository.target, repository.manager, repository.queryRunner);
   }
 
-  public findUser(email?, userName?) {
+  public findUser(email?, userName?,id?) {
     return this.findOne({
-      where: { email, userName },
+      where: { email, userName, id },
       select: {
         email: true,
         password: true,

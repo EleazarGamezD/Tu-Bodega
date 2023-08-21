@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UseGuards, HttpCode, Patch } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, HttpCode, Patch, Delete } from '@nestjs/common';
 import { CartService } from './cart.service';
 import { CreateCartItemDto } from './dto/create-cart.dto';
 import { ApiTags } from '@nestjs/swagger';
@@ -29,7 +29,7 @@ export class CartController {
   }
 
 
- @Patch('clear-item')
+ @Delete('clear-item')
   @HttpCode(200)
   @UseGuards(AuthGuard())
 async updateOrder(@GetUser() user: User) {

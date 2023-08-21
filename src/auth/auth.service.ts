@@ -3,6 +3,7 @@ import {
   Injectable,
   InternalServerErrorException,
   Logger,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 
@@ -16,9 +17,7 @@ import {
   UserDetailRepository,
   UserRepository,
 } from 'src/repositories/user-repository';
-import { PaginationDto } from 'src/common/dtos/pagination.dto';
-import { EntityNotFoundError } from 'typeorm';
-import { UserDetails } from './entities/user-details.entity';
+
 @Injectable()
 export class AuthService {
   // creamos variable privada logger  para manejar los errores en la consola de NEST
@@ -31,19 +30,6 @@ export class AuthService {
 
     private readonly jwtService: JwtService,
   ) {}
-
-  //Find All Users 
-  async findAll(paginationDto: PaginationDto) {
-    const { limit, offset } = paginationDto; //we unstructured the paginationDTO to indicate the Limit and Offset
-    const users = await this.userRepository.find({
-      take: limit,
-      skip: offset,
-      relations: {
-        details: true,
-      },
-    });
-    return users;
-  }
 
   async create(createUserDto: CreateUserDto) {
     try {
@@ -84,8 +70,8 @@ export class AuthService {
   async login(loginUserDto: LoginUserDto) {
     try {
       const { password, email, userName } = loginUserDto;
-      
-        //TODO convertir el userName y el Email a lowecase para que las validaciones siguientes no fallen 
+
+      //TODO convertir el userName y el Email a lowecase para que las validaciones siguientes no fallen
       const user = await this.userRepository.findUser(email, userName);
       if (!user)
         throw new UnauthorizedException(
@@ -129,37 +115,5 @@ export class AuthService {
     );
   }
 
-
-
-  async deleteUserDetail(userId: string, userDetailId: string) {
-  return ' hola bebe '
-  console.log(userDetailId)
-  try {
-    // Obtén el usuario por su ID y asegúrate de que existe
-    const user = await this.userRepository.findUser(userId, {
-      relations: {details:true}
-    });
-    if (!user) {
-      throw new EntityNotFoundError(User, userId);
-    }
-
-    // Encuentra el detalle de usuario por su IDfindUser
-    const userDetailToDelete = user.details.find(
-      (detail) => detail.id === userDetailId,
-    );
-
-    if (!userDetailToDelete) {
-      throw new EntityNotFoundError(UserDetails, userDetailId);
-    }
-
-    // Elimina el detalle de usuario
-    await this.userDetailsRepository.delete(userDetailToDelete.id);
-
-    return { message: 'User Detail deleted successfully' };
-  } catch (error) {
-    this.handleException(error);
-  }
-}
-
-  
+ 
 }

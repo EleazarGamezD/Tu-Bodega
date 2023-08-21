@@ -1,15 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  HttpCode,
-  Query,
-  UseGuards,
-  Delete,
-  ParseUUIDPipe,
-  Param,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, HttpCode } from '@nestjs/common';
 
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -19,10 +8,6 @@ import { GetUser } from './decorator';
 
 import { Auth } from './decorator/auth.decorator';
 import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { PaginationDto } from 'src/common/dtos/pagination.dto';
-import { ValidRoles } from './interfaces';
-import { AuthGuard } from '@nestjs/passport';
-import { UserDetails } from './entities/user-details.entity';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -31,12 +16,14 @@ export class AuthController {
 
   @Post('register')
   @HttpCode(201)
+  //TODO hacer los apis Response
   create(@Body() createUserDto: CreateUserDto, user: User) {
     return this.authService.create(createUserDto);
   }
 
   @Post('login')
   @HttpCode(200)
+  //TODO hacer los apis Response
   loginUser(@Body() loginUserDto: LoginUserDto) {
     return this.authService.login(loginUserDto);
   }
@@ -47,35 +34,4 @@ export class AuthController {
   checkAuthStatus(@GetUser() user: User) {
     return this.authService.checkAuthStatus(user);
   }
-
-  @Get('all-users')
-  @HttpCode(200)
-  @ApiResponse({ status: 200, description: 'get All users', type: User })
-  @ApiResponse({ status: 400, description: 'Bad Request' })
-  @ApiResponse({ status: 401, description: 'Unauthorized' })
-  @ApiResponse({ status: 403, description: 'Forbidden, Token related' })
-  @ApiBearerAuth()
-  @Auth(ValidRoles.admin)
-  @UseGuards(AuthGuard('jwt'))
-  getAllUsers(@Query() paginationDto: PaginationDto) {
-    return this.authService.findAll(paginationDto);
-  }
-
-  @Delete(':userDetailId')
-  @HttpCode(200)
-  @ApiResponse({ status: 200, description: 'Detail Deleted', type: User })
-  @ApiResponse({ status: 400, description: 'Bad Request' })
-  @ApiResponse({ status: 401, description: 'Unauthorized' })
-  @ApiResponse({ status: 403, description: 'Forbidden, Token related' })
-  @ApiBearerAuth()
-  @Auth(ValidRoles.user, ValidRoles.admin)
-  deleteUserDetail(
-    @GetUser() user: User,
-    @Param('userDetailId', ParseUUIDPipe) userDetailId: string,
-  ) {
-    return this.authService.deleteUserDetail(user.id, userDetailId);
-  }
-
-  //TODO hacer la funcion de edicion y eliminacion de una de las direcciones
-  //TODO hacer la funcion para actualizar los datos de un cliente "direccion o datos personales "
 }

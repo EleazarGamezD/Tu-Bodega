@@ -13,6 +13,7 @@ import { MessagesWsModule } from './messages-ws/messages-ws.module';
 import { join } from 'path';
 import { OrdersModule } from './orders/orders.module';
 import { CartModule } from './cart/cart.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { CartModule } from './cart/cart.module';
     OrdersModule,
     CartModule,
     OrdersModule,
+    UsersModule,
   ],
 })
 export class AppModule {}
