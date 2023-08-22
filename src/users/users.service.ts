@@ -14,7 +14,7 @@ export class UsersService {
     private readonly userDetailsRepository: UserDetailRepository,
 
     private readonly jwtService: JwtService,
-  ) {}
+  ) { }
 
   //Find All Users
   async findAll(paginationDto: PaginationDto) {
@@ -47,7 +47,40 @@ export class UsersService {
 
   //add new Details (phone, adress, country, etc ) 
 
-  async updateUserDetail(user,UpdateUserDto){
-    return 'this user has been Updated'
+  async updateUserDetail(user, updateUserDto) {
+    //   try {
+    //     const { address, city, phone, country, password, ...userData } =
+    //       updateUserDto|;
+
+    //     if (!password) {
+    //       throw new Error('Password is required');
+    //     }
+    //     //aplicamos el método bcrypt desestructurando la data y le indicamos que le de 10 vueltas
+    //     const hashedPassword = bcrypt.hashSync(password, 10);
+    //     //primero creamos el usuario con la clave ya encriptada
+    //     const newUser = this.userRepository.create({
+    //       ...userData,
+    //       password: hashedPassword,
+    //     });
+    //     await this.userRepository.save(newUser);
+    //     delete newUser.password;
+
+    //     // luego insertamos los detalles del usuario relacionados a su ID
+    //     const userDetails = this.userDetailsRepository.create({
+    //       address,
+    //       city,
+    //       phone,
+    //       country,
+    //       user: newUser,
+    //     });
+    //     newUser.details = [userDetails];
+    //     await this.userDetailsRepository.saveUsersDetails(userDetails);
+
+    //     //retornar el JWT de acceso Con datos de usuario
+    //     return { ...userData, token: this.getJwtToken({ id: userData.email }) };
+    //   } catch (error) {
+    //     this.handleException(error);
+    //   }
+    // }
   }
 }

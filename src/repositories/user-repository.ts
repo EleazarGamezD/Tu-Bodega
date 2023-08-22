@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserDetails } from 'src/auth/entities/user-details.entity';
 import { User } from 'src/auth/entities/user.entity';
-import { Repository } from 'typeorm';
+import { Repository, Like } from 'typeorm';
 
 @Injectable()
 export class UserRepository extends Repository<User> {
@@ -13,18 +13,33 @@ export class UserRepository extends Repository<User> {
     super(repository.target, repository.manager, repository.queryRunner);
   }
 
-  public findUser(email?, userName?,id?) {
-    return this.findOne({
-      where: { email, userName, id },
-      select: {
-        email: true,
-        password: true,
-        id: true,
-        userName: true,
-        roles: true,
-        isActive: true,
-      },
-    });
+  public findUser(email?: string, userName?: string, id?: string) {
+    const query = this.createQueryBuilder('user').select([
+      'user.email',
+      'user.password',
+      'user.id',
+      'user.userName',
+      'user.roles',
+      'user.isActive',
+    ]);
+
+    if (email) {
+      query.andWhere('LOWER(user.email) LIKE :email', {
+        email: `%${email.toLowerCase()}%`,
+      });
+    }
+
+    if (userName) {
+      query.andWhere('LOWER(user.userName) LIKE :userName', {
+        userName: `%${userName.toLowerCase()}%`,
+      });
+    }
+
+    if (id) {
+      query.andWhere('user.id = :id', { id });
+    }
+
+    return query.getOne();
   }
 }
 
@@ -35,9 +50,12 @@ export class UserDetailRepository extends Repository<UserDetails> {
     @InjectRepository(UserDetails)
     detailRepository: Repository<UserDetails>,
   ) {
-    super(detailRepository.target, detailRepository.manager, detailRepository.queryRunner);
+    super(
+      detailRepository.target,
+      detailRepository.manager,
+      detailRepository.queryRunner,
+    );
   }
-
 
   //extension del método save del repositorio de UsersDetails
   public saveUsersDetails(userDetails) {

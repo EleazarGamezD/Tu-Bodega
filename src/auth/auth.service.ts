@@ -71,7 +71,6 @@ export class AuthService {
     try {
       const { password, email, userName } = loginUserDto;
 
-      //TODO convertir el userName y el Email a lowecase para que las validaciones siguientes no fallen
       const user = await this.userRepository.findUser(email, userName);
       if (!user)
         throw new UnauthorizedException(
@@ -114,6 +113,4 @@ export class AuthService {
       'Unexpected error, Check Server Logs',
     );
   }
-
- 
 }
