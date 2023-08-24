@@ -13,6 +13,7 @@ export class UserRepository extends Repository<User> {
     super(repository.target, repository.manager, repository.queryRunner);
   }
 
+  // method to  find user, when this method receive the vars "email or userName" are converted to lowercase
   public findUser(email?: string, userName?: string, id?: string) {
     const query = this.createQueryBuilder('user').select([
       'user.email',
@@ -43,7 +44,7 @@ export class UserRepository extends Repository<User> {
   }
 }
 
-//extension del repositorio UserDetails
+// UserDetails repository extension
 @Injectable()
 export class UserDetailRepository extends Repository<UserDetails> {
   constructor(
@@ -57,7 +58,8 @@ export class UserDetailRepository extends Repository<UserDetails> {
     );
   }
 
-  //extension del método save del repositorio de UsersDetails
+  
+// extension of the save method of the UsersDetails repository
   public saveUsersDetails(userDetails) {
     return this.save(userDetails);
   }

@@ -47,40 +47,31 @@ export class UsersService {
 
   //add new Details (phone, adress, country, etc ) 
 
-  async updateUserDetail(user, updateUserDto) {
-    //   try {
-    //     const { address, city, phone, country, password, ...userData } =
-    //       updateUserDto|;
+  async updateUser(user: User, updateUserDto): Promise<User> {
+    // Actualizar los campos de roles y isActive del usuario
+    user.roles = updateUserDto.roles;
+    user.isActive = updateUserDto.isActive;
+    
+    // Guardar los cambios en el usuario
+    await this.userRepository.save(user);
 
-    //     if (!password) {
-    //       throw new Error('Password is required');
-    //     }
-    //     //aplicamos el método bcrypt desestructurando la data y le indicamos que le de 10 vueltas
-    //     const hashedPassword = bcrypt.hashSync(password, 10);
-    //     //primero creamos el usuario con la clave ya encriptada
-    //     const newUser = this.userRepository.create({
-    //       ...userData,
-    //       password: hashedPassword,
-    //     });
-    //     await this.userRepository.save(newUser);
-    //     delete newUser.password;
+    // Verificar si se proporcionaron campos para los detalles del usuario
+    if (updateUserDto.userDetails) {
+      const userDetails = await this.userDetailsRepository.findOne({ where: { id: user.id } });
 
-    //     // luego insertamos los detalles del usuario relacionados a su ID
-    //     const userDetails = this.userDetailsRepository.create({
-    //       address,
-    //       city,
-    //       phone,
-    //       country,
-    //       user: newUser,
-    //     });
-    //     newUser.details = [userDetails];
-    //     await this.userDetailsRepository.saveUsersDetails(userDetails);
+      // Si userDetails existe, actualizar los campos proporcionados
+      if (userDetails) {
+        userDetails.address = updateUserDto.userDetails.address || userDetails.address;
+        userDetails.city = updateUserDto.userDetails.city || userDetails.city;
+        userDetails.phone = updateUserDto.userDetails.phone || userDetails.phone;
+        userDetails.country = updateUserDto.userDetails.country || userDetails.country;
 
-    //     //retornar el JWT de acceso Con datos de usuario
-    //     return { ...userData, token: this.getJwtToken({ id: userData.email }) };
-    //   } catch (error) {
-    //     this.handleException(error);
-    //   }
-    // }
+        await this.userDetailsRepository.save(userDetails);
+      }
+    }
+
+    return user;
   }
 }
+
+
