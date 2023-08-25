@@ -71,7 +71,7 @@ export class CartService {
     if (existingCartItem) {
       // Si el producto ya está en el carrito, actualizar la cantidad
       //actualizamos la cantidad el item
-      existingCartItem.quantity = quantity; // TODO colocar la cantidad directamente el front deberia siempre enviarme la cantidad directamente quantity = quantity
+      existingCartItem.quantity = quantity; //? colocar la cantidad directamente el front deberia siempre enviarme la cantidad directamente quantity = quantity
 
       //llamamos nuevamente a la funcion de calculo del total del item y lo actualizamos
       existingCartItem.itemAmount = await this.calculateItemTotal(

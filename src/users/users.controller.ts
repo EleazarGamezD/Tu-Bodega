@@ -64,8 +64,8 @@ export class UsersController {
   @Auth(ValidRoles.admin,ValidRoles.user)
   @UseGuards(AuthGuard('jwt'))
   updateUser(@GetUser() user:User,
-    @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.updateUser(user, updateUserDto);
+    @Body('term',ParseUUIDPipe) term:string, updateUserDto: UpdateUserDto) {
+    return this.usersService.updateUser(user, term, updateUserDto);
   }
   //TODO hacer la funcion de edicion y eliminacion de una de las direcciones
   //TODO hacer la funcion para actualizar los datos de un cliente "direccion o datos personales "

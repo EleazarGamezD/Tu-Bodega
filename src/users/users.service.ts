@@ -29,7 +29,7 @@ export class UsersService {
     return users;
   }
 
-  //delete user Detail (phone, adress, country, etc )
+  //delete user Detail (phone, address, country, etc )
   async deleteUserDetail(userId, detailId: string): Promise<User> {
     const detailIndex = userId.details.findIndex(
       (detail) => detail.id === detailId,
@@ -45,9 +45,9 @@ export class UsersService {
     return userId;
   }
 
-  //add new Details (phone, adress, country, etc ) 
+  //add new Details (phone, address, country, etc ) 
 
-  async updateUser(user: User, updateUserDto): Promise<User> {
+  async updateUser(user: User,detailId?, updateUserDto?): Promise<User> {
     // Actualizar los campos de roles y isActive del usuario
     user.roles = updateUserDto.roles;
     user.isActive = updateUserDto.isActive;
@@ -56,9 +56,9 @@ export class UsersService {
     await this.userRepository.save(user);
 
     // Verificar si se proporcionaron campos para los detalles del usuario
-    if (updateUserDto.userDetails) {
+    if (detailId) {
       const userDetails = await this.userDetailsRepository.findOne({ where: { id: user.id } });
-
+      
       // Si userDetails existe, actualizar los campos proporcionados
       if (userDetails) {
         userDetails.address = updateUserDto.userDetails.address || userDetails.address;
