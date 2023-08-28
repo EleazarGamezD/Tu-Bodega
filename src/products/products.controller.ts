@@ -17,7 +17,7 @@ import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { Auth, GetUser } from 'src/auth/decorator';
 import { ValidRoles } from 'src/auth/interfaces';
 import { User } from 'src/auth/entities/user.entity';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiResponse, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { Product } from './entities/product.entity';
 
 @ApiTags('Products')
@@ -60,6 +60,7 @@ export class ProductsController {
   }
 
   @Patch(':id')
+  @ApiBearerAuth()
   @HttpCode(200)
   @Auth(ValidRoles.admin)
   @ApiResponse({
@@ -79,9 +80,14 @@ export class ProductsController {
   }
 
   @Delete(':id')
+  @ApiBearerAuth()
   @HttpCode(200)
   @Auth(ValidRoles.admin)
-  @ApiResponse({ status: 201, description: 'product was removed',type: Product,})
+  @ApiResponse({
+    status: 201,
+    description: 'product was removed',
+    type: Product,
+  })
   @ApiResponse({ status: 400, description: 'Bad Request' })
   @ApiResponse({ status: 403, description: 'Forbidden, Token related' })
   remove(

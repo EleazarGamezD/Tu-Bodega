@@ -12,35 +12,33 @@ async function bootstrap() {
 
   app.setGlobalPrefix('api');
 
-const options = {
-  swaggerOptions: {
-    authAction: {
-      defaultBearerAuth: {
-        name: 'defaultBearerAuth',
-        schema: {
-          description: 'Default',
-          type: 'http',
-          in: 'header',
-          scheme: 'bearer',
-          bearerFormat: 'JWT',
-        },
-        value: 'thisIsASampleBearerAuthToken123',
-      },
-    },
-  },
-};
+
 
   const config = new DocumentBuilder()
     .setTitle('tu bodega ')
     .setDescription('Api para manejo de pequeño Ecomerce')
     .setVersion('1.0')
-    .addBearerAuth(undefined, 'defaultBearerAuth')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        name: 'JWT',
+        description: 'Enter JWT token',
+        in: 'header',
+      },
+      'token',
+    )
     .build();
     
     ;
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document,options);
+  SwaggerModule.setup('api', app, document, {
+    swaggerOptions: {
+      persistAuthorization: true,
+    },
+  });
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,

@@ -1,7 +1,6 @@
 import {
   Controller,
   Get,
-  Post,
   Body,
   Patch,
   Param,
@@ -19,7 +18,6 @@ import { AuthGuard } from '@nestjs/passport';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { User } from 'src/auth/entities/user.entity';
 import { UpdateUserDto } from 'src/auth/dto';
-
 
 @ApiTags('Users')
 @Controller('users')
@@ -56,15 +54,22 @@ export class UsersController {
 
   @Patch('update-user')
   @HttpCode(200)
-  @ApiResponse({ status: 200, description: 'User has been Updated', type: User })
+  @ApiResponse({
+    status: 200,
+    description: 'User has been Updated',
+    type: User,
+  })
   @ApiResponse({ status: 400, description: 'Bad Request' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 403, description: 'Forbidden, Token related' })
-  @ApiBearerAuth()
-  @Auth(ValidRoles.admin,ValidRoles.user)
+  @ApiBearerAuth('token')
+  @Auth(ValidRoles.admin, ValidRoles.user)
   @UseGuards(AuthGuard('jwt'))
-  updateUser(@GetUser() user:User,
-    @Body('term',ParseUUIDPipe) term:string, updateUserDto: UpdateUserDto) {
+  updateUser(
+    @GetUser() user: User,
+    @Body('term', ParseUUIDPipe) term: string,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
     return this.usersService.updateUser(user, term, updateUserDto);
   }
   //TODO hacer la funcion de edicion y eliminacion de una de las direcciones

@@ -57,7 +57,7 @@ export class UsersService {
 
     // Verificar si se proporcionaron campos para los detalles del usuario
     if (detailId) {
-      const userDetails = await this.userDetailsRepository.findOne({ where: { id: user.id } });
+      const userDetails = await this.userDetailsRepository.findOne({ where: { id: detailId } });
       
       // Si userDetails existe, actualizar los campos proporcionados
       if (userDetails) {
