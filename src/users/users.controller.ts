@@ -30,7 +30,7 @@ export class UsersController {
   @ApiResponse({ status: 400, description: 'Bad Request' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 403, description: 'Forbidden, Token related' })
-  @ApiBearerAuth()
+  @ApiBearerAuth('token')
   @Auth(ValidRoles.admin)
   @UseGuards(AuthGuard('jwt'))
   getAllUsers(@Query() paginationDto: PaginationDto) {
@@ -43,7 +43,7 @@ export class UsersController {
   @ApiResponse({ status: 400, description: 'Bad Request' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 403, description: 'Forbidden, Token related' })
-  @ApiBearerAuth()
+  @ApiBearerAuth('token')
   @Auth(ValidRoles.user, ValidRoles.admin)
   removeUserDetail(
     @GetUser() user: User,
@@ -67,10 +67,12 @@ export class UsersController {
   @UseGuards(AuthGuard('jwt'))
   updateUser(
     @GetUser() user: User,
-    @Body('term', ParseUUIDPipe) term: string,
-    @Body() updateUserDto: UpdateUserDto,
+    
+    @Body()
+    updateUserDto: UpdateUserDto,
+    
   ) {
-    return this.usersService.updateUser(user, term, updateUserDto);
+    return this.usersService.updateUser(user,  updateUserDto);
   }
   //TODO hacer la funcion de edicion y eliminacion de una de las direcciones
   //TODO hacer la funcion para actualizar los datos de un cliente "direccion o datos personales "

@@ -15,6 +15,7 @@ export class CreateUserDto {
     minLength: 1,
   })
   @IsString()
+  @IsOptional()
   email: string;
 
   @ApiProperty({
@@ -24,6 +25,7 @@ export class CreateUserDto {
     minLength: 6,
     maxLength: 50,
   })
+  @IsOptional()
   @IsString()
   @MinLength(6)
   @MaxLength(50)
@@ -40,6 +42,7 @@ export class CreateUserDto {
   })
   @IsString()
   @MinLength(1)
+  @IsOptional()
   fullName: string;
 
   @ApiProperty({
@@ -48,6 +51,7 @@ export class CreateUserDto {
     minLength: 1,
   })
   @IsString()
+  @IsOptional()
   userName: string;
 
   @ApiProperty({
