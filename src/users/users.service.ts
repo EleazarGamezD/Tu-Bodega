@@ -68,6 +68,7 @@ export class UsersService {
 
     // Si userDetails existe, actualizar los campos proporcionados
     if (detailIndex === -1) {
+      console.log('aplicando el if')
       const { address, city, phone, country, password, ...userData } =
         updateUserDto;
       const newUserDetails = this.userDetailsRepository.create({
@@ -79,7 +80,9 @@ export class UsersService {
       });
       user.details = [newUserDetails];
       await this.userDetailsRepository.saveUsersDetails(newUserDetails);
-    } else {
+    }
+    else {
+      console.log('aplicando else')
       userDetails.address = updateUserDto.address || userDetails.address;
       userDetails.city = updateUserDto.city || userDetails.city;
       userDetails.phone = updateUserDto.phone || userDetails.phone;

@@ -69,13 +69,13 @@ export class UsersController {
   @UseGuards(AuthGuard('jwt'))
   updateUser(
     @GetUser() user: User,
-
     @Body()
     updateUserDto: UpdateUserDto,
   ) {
     return this.usersService.updateUser(user, updateUserDto);
   }
 
+  
   @Post('add-details-user')
   @HttpCode(200)
   @ApiResponse({

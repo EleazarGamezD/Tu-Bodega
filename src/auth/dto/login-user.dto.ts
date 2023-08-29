@@ -12,12 +12,18 @@ export class LoginUserDto {
     description: 'user Email (unique) ',
     nullable: false,
     minLength: 1,
+    example: 'test@g.com',
   })
   @IsString()
   @IsOptional()
   email: string;
 
-  @ApiProperty({ description: 'userName ', nullable: false, minLength: 1 })
+  @ApiProperty({
+    description: 'userName ',
+    nullable: false,
+    minLength: 1,
+    example: 'test1',
+  })
   @IsString()
   @IsOptional()
   userName: string;
@@ -28,6 +34,7 @@ export class LoginUserDto {
     nullable: false,
     minLength: 6,
     maxLength: 50,
+    example:'Abc123'
   })
   @IsString()
   @MinLength(6)

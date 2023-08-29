@@ -58,8 +58,7 @@ export class UserDetailRepository extends Repository<UserDetails> {
     );
   }
 
-  
-// extension of the save method of the UsersDetails repository
+  // extension of the save method of the UsersDetails repository
   public saveUsersDetails(userDetails) {
     return this.save(userDetails);
   }
