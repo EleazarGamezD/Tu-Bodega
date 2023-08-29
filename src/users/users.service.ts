@@ -3,6 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { User } from 'src/auth/entities/user.entity';
 
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
+import { UpdateUserDto } from '../auth/dto/update-user.dto';
 import {
   UserDetailRepository,
   UserRepository,
@@ -51,9 +52,9 @@ export class UsersService {
 
   async updateUser(user: User, updateUserDto): Promise<User> {
     console.table(user);
-    console.table(updateUserDto)
-   
-    const userDetails = updateUserDto
+    console.table(updateUserDto);
+
+    const userDetails = updateUserDto;
     // Actualizar los campos de roles y isActive del usuario
     user.roles = updateUserDto.roles;
     user.isActive = updateUserDto.isActive;
@@ -62,36 +63,46 @@ export class UsersService {
     await this.userRepository.save(user);
 
     // Verificar si se proporcionaron campos para los detalles del usuario
-    
-      const detailIndex = user.details.findIndex(
-        (detail) => detail.id
-      );
 
-      // Si userDetails existe, actualizar los campos proporcionados
+    const detailIndex = user.details.findIndex((detail) => detail.id);
+
+    // Si userDetails existe, actualizar los campos proporcionados
     if (detailIndex === -1) {
-       const { address, city, phone, country, password, ...userData } =
-         updateUserDto;
+      const { address, city, phone, country, password, ...userData } =
+        updateUserDto;
       const newUserDetails = this.userDetailsRepository.create({
         address,
         city,
         phone,
         country,
-        user
+        user,
       });
-        user.details = [newUserDetails];
-        await this.userDetailsRepository.saveUsersDetails(newUserDetails)
+      user.details = [newUserDetails];
+      await this.userDetailsRepository.saveUsersDetails(newUserDetails);
+    } else {
+      userDetails.address = updateUserDto.address || userDetails.address;
+      userDetails.city = updateUserDto.city || userDetails.city;
+      userDetails.phone = updateUserDto.phone || userDetails.phone;
+      userDetails.country = updateUserDto.country || userDetails.country;
 
-        
-      } else {
-        userDetails.address = updateUserDto.address || userDetails.address;
-        userDetails.city = updateUserDto.city || userDetails.city;
-        userDetails.phone = updateUserDto.phone || userDetails.phone;
-        userDetails.country = updateUserDto.country || userDetails.country;
+      await this.userDetailsRepository.save(userDetails);
+    }
 
-        await this.userDetailsRepository.save(userDetails);
-      }
-    
+    return user;
+  }
 
+  async addDetailsToUser(user: User, updateUserDto): Promise<User> {
+    const { address, city, phone, country, password, ...userData } =
+      updateUserDto;
+    const newUserDetails = this.userDetailsRepository.create({
+      address,
+      city,
+      phone,
+      country,
+      user,
+    });
+    user.details = [newUserDetails];
+    await this.userDetailsRepository.saveUsersDetails(newUserDetails);
     return user;
   }
 }
