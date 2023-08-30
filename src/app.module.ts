@@ -45,7 +45,6 @@ import { UsersModule } from './users/users.module';
     //?  MessagesWsModule, // deshabilitado el modulo WebSocket para mensajes
     OrdersModule,
     CartModule,
-    OrdersModule,
     UsersModule,
   ],
 })
