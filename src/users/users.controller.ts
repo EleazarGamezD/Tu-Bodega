@@ -19,6 +19,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { User } from 'src/auth/entities/user.entity';
 import { UpdateUserDto } from 'src/auth/dto';
+import { UpdateUserDetailsDto } from 'src/auth/dto/update-user.dto';
 
 @ApiTags('Users')
 @Controller('users')
@@ -54,7 +55,7 @@ export class UsersController {
   }
 
   //TODO refactorizar el codigo para actualizar los datos de los usuarios 
-  @Patch('update-user')
+  @Patch('update-details/:id')
   @HttpCode(200)
   @ApiResponse({
     status: 200,
@@ -68,11 +69,12 @@ export class UsersController {
   @Auth(ValidRoles.admin, ValidRoles.user)
   @UseGuards(AuthGuard('jwt'))
   updateUser(
+    @Param('id', ParseUUIDPipe)
+    id:string,
+    @Body()updateUserDetailsDto: UpdateUserDetailsDto,
     @GetUser() user: User,
-    @Body()
-    updateUserDto: UpdateUserDto,
-  ) {
-    return this.usersService.updateUser(user, updateUserDto);
+    ) {
+    return this.usersService.updateUserDetails(id,user, updateUserDetailsDto);
   }
 
   

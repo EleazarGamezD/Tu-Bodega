@@ -28,6 +28,7 @@ export class ProductsController {
   @Post('createItem')
   @HttpCode(201)
   @Auth(ValidRoles.admin)
+  @ApiBearerAuth('token')
   @ApiResponse({
     status: 201,
     description: 'product was created',
@@ -60,7 +61,7 @@ export class ProductsController {
   }
 
   @Patch(':id')
-  @ApiBearerAuth()
+  @ApiBearerAuth('token')
   @HttpCode(200)
   @Auth(ValidRoles.admin)
   @ApiResponse({
@@ -80,7 +81,7 @@ export class ProductsController {
   }
 
   @Delete(':id')
-  @ApiBearerAuth()
+  @ApiBearerAuth('token')
   @HttpCode(200)
   @Auth(ValidRoles.admin)
   @ApiResponse({

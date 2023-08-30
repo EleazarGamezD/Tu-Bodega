@@ -50,9 +50,10 @@ export class UsersService {
 
   //add new Details (phone, address, country, etc )
 
-  async updateUser(user: User, updateUserDto): Promise<User> {
+  async updateUserDetails(id,user: User, updateUserDto): Promise<User> {
     console.table(user);
     console.table(updateUserDto);
+    console.table(id)
 
     const userDetails = updateUserDto;
     // Actualizar los campos de roles y isActive del usuario
