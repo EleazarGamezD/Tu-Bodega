@@ -165,5 +165,5 @@ export class ProductsService {
     }
   }
 
-  private readonly imageBaseUrl = process.env.HOST_API + '/files/product/';
+  private readonly imageBaseUrl = process.env.HOST_API + 'files/product/';
 }
