@@ -34,7 +34,7 @@ export class LoginUserDto {
     nullable: false,
     minLength: 6,
     maxLength: 50,
-    example:'Abc123'
+    example: 'Abc123',
   })
   @IsString()
   @MinLength(6)

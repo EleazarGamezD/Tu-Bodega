@@ -63,8 +63,9 @@ export class ProductsService {
     });
     return products.map((products) => ({
       ...products,
-      images: products.images.map((img) => img.url),
+      images: products.images.map((img) => this.imageBaseUrl + img.url),
     }));
+    //TODO revisar que deba devolver la imagen con la URL completa
   }
 
   // búsqueda de un item especifico
@@ -77,12 +78,10 @@ export class ProductsService {
       product = await queryBuilder
         //construimos el query donde comparamos los parámetros que le vamos a enviar que en este caso puede ser slug o el title
         .where(
-          ' UPPER(title) = :title or slug = :slug or = :tags',
-          // indicamos que el valor de TERM se puede aplicar a title y al slug
+          'UPPER(title) = UPPER(:term) OR slug = :term OR :tagTerm = ANY(tags)',
           {
-            title: term.toUpperCase(),
-            slug: term.toLowerCase(),
-            tags: term,
+            term: term,
+            tagTerm: term, // Use the term as-is for array comparison
           },
         )
         .leftJoinAndSelect('prod.images', 'ProdImages')
@@ -165,4 +164,6 @@ export class ProductsService {
       this.handleException(error);
     }
   }
+
+  private readonly imageBaseUrl = process.env.HOST_API + '/files/product/';
 }
