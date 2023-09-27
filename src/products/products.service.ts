@@ -65,7 +65,7 @@ export class ProductsService {
       ...products,
       images: products.images.map((img) => this.imageBaseUrl + img.url),
     }));
-    //TODO revisar que deba devolver la imagen con la URL completa
+   
   }
 
   // búsqueda de un item especifico
@@ -87,18 +87,21 @@ export class ProductsService {
         .leftJoinAndSelect('prod.images', 'ProdImages')
         .getOne(); // con este indicamos que solo tome uno de estos dos valores
     }
-
+    
     if (!product)
       throw new NotFoundException(
         `Article whit id, name or no "${term}" not found `,
       );
-
     return product;
+   
   }
   //funcion intermedia para regresar el Objeto (item) de manera plana
   async findOnePlain(term: string) {
     const { images = [], ...rest } = await this.findOne(term);
-    return { ...rest, images: images.map((image) => image.url) };
+    return {
+      ...rest,
+      images: images.map((image) => this.imageBaseUrl + image.url),
+    };
   }
 
   async update(id: string, updateProductDto: UpdateProductDto, user: User) {
