@@ -16,14 +16,17 @@ export class AuthController {
 
   @Post('register')
   @HttpCode(201)
-  //TODO hacer los apis Response
+  @ApiResponse({ status: 200, description: 'User Created', type: User })
+  @ApiResponse({ status: 400, description: 'Bad Request' })
   create(@Body() createUserDto: CreateUserDto, user: User) {
     return this.authService.create(createUserDto);
   }
 
   @Post('login')
   @HttpCode(200)
-  //TODO hacer los apis Response
+  @ApiResponse({ status: 200, description: 'Login successfully', type: User })
+  @ApiResponse({ status: 400, description: 'Bad Request' })
+  @ApiResponse({ status: 204, description: 'Email or Password Invalid' })
   loginUser(@Body() loginUserDto: LoginUserDto) {
     return this.authService.login(loginUserDto);
   }

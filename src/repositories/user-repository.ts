@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserDetails } from 'src/auth/entities/user-details.entity';
 import { User } from 'src/auth/entities/user.entity';
 import { Repository, Like } from 'typeorm';
+import { isUUID } from 'class-validator';
 
 @Injectable()
 export class UserRepository extends Repository<User> {
@@ -41,6 +42,10 @@ export class UserRepository extends Repository<User> {
     }
 
     return query.getOne();
+  }
+
+  async findUserById(id: string): Promise<User> {
+    return this.findOne({ where: { id } }); // Esto buscará un usuario por su ID de manera predeterminada
   }
 }
 

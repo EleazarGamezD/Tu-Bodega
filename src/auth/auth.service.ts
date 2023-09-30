@@ -1,5 +1,6 @@
 import {
   BadGatewayException,
+  HttpStatus,
   Injectable,
   InternalServerErrorException,
   Logger,
@@ -67,20 +68,24 @@ export class AuthService {
     }
   }
 
-  async login(loginUserDto: LoginUserDto) {
+  async login(loginUserDto: LoginUserDto) {  //TODO hacer cambios para devolver https Status en Validacion de Email y Password 
     try {
       const { password, email, userName } = loginUserDto;
 
       const user = await this.userRepository.findUser(email, userName);
       if (!user)
-        throw new UnauthorizedException(
-          'Credentials are not valid (Email or UserName ) ',
-        );
+        return {
+          statusCode: HttpStatus.NO_CONTENT,
+          message: 'Email Not Found ',
+        };     
 
       if (!bcrypt.compareSync(password, user.password))
-        throw new UnauthorizedException(
-          'Credentials are not valid (password) ',
-        );
+        
+        return {
+          statusCode: HttpStatus.NO_CONTENT,
+          message: 'Credentials are not valid (password) ',
+        };
+        
 
       return { ...user, token: this.getJwtToken({ id: user.id }) };
     } catch (error) {

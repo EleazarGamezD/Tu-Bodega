@@ -54,7 +54,7 @@ export class UsersController {
     return this.usersService.deleteUserDetail(user, term);
   }
 
-  //TODO refactorizar el codigo para actualizar los datos de los usuarios 
+  //TODO refactorizar el codigo para actualizar los datos de los usuarios
   @Patch('update-details/:id')
   @HttpCode(200)
   @ApiResponse({
@@ -70,14 +70,13 @@ export class UsersController {
   @UseGuards(AuthGuard('jwt'))
   updateUser(
     @Param('id', ParseUUIDPipe)
-    id:string,
-    @Body()updateUserDetailsDto: UpdateUserDetailsDto,
+    id: string,
+    @Body() updateUserDetailsDto: UpdateUserDetailsDto,
     @GetUser() user: User,
-    ) {
-    return this.usersService.updateUserDetails(id,user, updateUserDetailsDto);
+  ) {
+    return this.usersService.updateUserDetails(id, user, updateUserDetailsDto);
   }
 
-  
   @Post('add-details-user')
   @HttpCode(200)
   @ApiResponse({
@@ -93,9 +92,22 @@ export class UsersController {
   @UseGuards(AuthGuard('jwt'))
   addDetailsToUser(
     @GetUser() user: User,
-    @Body()    updateUserDto: UpdateUserDto,
+    @Body() updateUserDto: UpdateUserDto,
   ) {
     return this.usersService.addDetailsToUser(user, updateUserDto);
+  }
+
+  @Get('user/:id')
+  @HttpCode(200)
+  @ApiResponse({ status: 200, description: 'get All users', type: User })
+  @ApiResponse({ status: 400, description: 'Bad Request' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 403, description: 'Forbidden, Token related' })
+  @ApiBearerAuth('token')
+  @Auth(ValidRoles.admin)
+  @UseGuards(AuthGuard('jwt'))
+  getUserById(@Param('id', ParseUUIDPipe) id: string) {
+    return this.usersService.getUserById(id);
   }
 
   //TODO hacer la funcion de edicion y eliminacion de una de las direcciones
