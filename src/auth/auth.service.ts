@@ -86,8 +86,8 @@ export class AuthService {
           message: 'Credentials are not valid (password) ',
         };
         
-
-      return { ...user, token: this.getJwtToken({ id: user.id }) };
+        
+      return {  user, token: this.getJwtToken({ id: user.id }) };
     } catch (error) {
       this.handleException(error);
     }

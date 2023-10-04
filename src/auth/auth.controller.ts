@@ -1,4 +1,11 @@
-import { Controller, Get, Post, Body, HttpCode } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  HttpCode,
+  UseGuards,
+} from '@nestjs/common';
 
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -8,6 +15,8 @@ import { GetUser } from './decorator';
 
 import { Auth } from './decorator/auth.decorator';
 import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ValidRoles } from './interfaces';
+import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -33,7 +42,12 @@ export class AuthController {
 
   @Get('check-status')
   @HttpCode(200)
-  @Auth()
+  @ApiResponse({ status: 200, description: 'Token Renovated', type: User })
+  @ApiResponse({ status: 400, description: 'Bad Request' })
+  @ApiResponse({ status: 204, description: 'Email or Password Invalid' })
+  @ApiBearerAuth('token')
+  @Auth(ValidRoles.admin)
+  @UseGuards(AuthGuard('jwt'))
   checkAuthStatus(@GetUser() user: User) {
     return this.authService.checkAuthStatus(user);
   }

@@ -23,6 +23,7 @@ export class UserRepository extends Repository<User> {
       'user.userName',
       'user.roles',
       'user.isActive',
+      'user.fullName',
     ]);
 
     if (email) {
