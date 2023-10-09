@@ -33,6 +33,8 @@ export class ProductsService {
 
   // creación de producto
   async create(createProductDto: CreateProductDto, user: User) {
+    
+    console.log(user)
     try {
       const { images = [], ...productDetails } = createProductDto;
       const product = this.productRepository.create({

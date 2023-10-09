@@ -33,6 +33,6 @@ import {
     }),
   ],
 
-  exports: [TypeOrmModule, JwtStrategy, PassportModule, JwtModule],
+  exports: [TypeOrmModule, JwtStrategy, PassportModule, JwtModule,AuthService, UserDetailRepository],
 })
 export class AuthModule {}

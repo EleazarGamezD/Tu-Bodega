@@ -16,7 +16,9 @@ export class CartRepository extends Repository<Cart> {
       cartRepository.queryRunner,
     );
   }
+ 
 }
+
 
 //extend CartITems Repository functions
 
@@ -52,4 +54,9 @@ export class CartItemRepository extends Repository<CartItem> {
       where: { cart: { id: cart.id }, product: { id: productId } },
     });
   }
+  public deleteAll() {
+    return this.deleteAll()
+
+}
+
 }

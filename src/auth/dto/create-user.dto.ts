@@ -62,7 +62,7 @@ export class CreateUserDto {
   @IsString({ each: true })
   @IsArray()
   @IsOptional()
-  userDetails: string[];
+  userDetails?: string[];
 
   @ApiProperty({
     description: 'user address ',

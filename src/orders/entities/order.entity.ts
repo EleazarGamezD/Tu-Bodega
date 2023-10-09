@@ -19,13 +19,12 @@ export class Order {
   @Column({ name: 'ordernumber' })
   orderNumber: number;
 
-  @ManyToOne((type) => User, (user) => user.orders)
+  @ManyToOne((type) => User, (user) => user.orders,)
   user: User;
 
   @OneToMany((type) => OrderItem, (orderItem) => orderItem.order, {
     cascade: true,
-    eager: true,
-  })
+    eager: true,})
   items: OrderItem[];
 
   @Column({ type: 'decimal', precision: 10, scale: 2, default: '0.00' })

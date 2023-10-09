@@ -37,7 +37,6 @@ import { UsersModule } from './users/users.module';
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public'),
     }),
-    ProductsModule,
     CommonModule,
     SeedModule,
     FilesModule,
@@ -46,6 +45,7 @@ import { UsersModule } from './users/users.module';
     OrdersModule,
     CartModule,
     UsersModule,
+    ProductsModule,
   ],
 })
 export class AppModule {}
