@@ -23,7 +23,7 @@ export class ProductsService {
   constructor(
     @InjectRepository(Product)
     private readonly productRepository: Repository<Product>,
-  ) {}
+  ) { }
 
   @InjectRepository(ProductImage)
   private readonly productImageRepository: Repository<ProductImage>;
@@ -33,8 +33,6 @@ export class ProductsService {
 
   // creación de producto
   async create(createProductDto: CreateProductDto, user: User) {
-    
-    console.log(user)
     try {
       const { images = [], ...productDetails } = createProductDto;
       const product = this.productRepository.create({
@@ -67,7 +65,7 @@ export class ProductsService {
       ...products,
       images: products.images.map((img) => this.imageBaseUrl + img.url),
     }));
-   
+
   }
 
   // búsqueda de un item especifico
@@ -89,13 +87,13 @@ export class ProductsService {
         .leftJoinAndSelect('prod.images', 'ProdImages')
         .getOne(); // con este indicamos que solo tome uno de estos dos valores
     }
-    
+
     if (!product)
       throw new NotFoundException(
         `Article whit id, name or no "${term}" not found `,
       );
     return product;
-   
+
   }
   //funcion intermedia para regresar el Objeto (item) de manera plana
   async findOnePlain(term: string) {

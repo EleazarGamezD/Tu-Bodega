@@ -30,11 +30,11 @@ async function bootstrap() {
       'token',
     )
     .build();
-    
-    ;
+
+  ;
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document, {
+  SwaggerModule.setup('/', app, document, {      //? se coloca '/' para que swagger sea la web principal ! 
     swaggerOptions: {
       persistAuthorization: true,
     },

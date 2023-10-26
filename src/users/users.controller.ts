@@ -24,7 +24,7 @@ import { UpdateUserDetailsDto } from 'src/auth/dto/update-user.dto';
 @ApiTags('Users')
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UsersService) { }
 
   @Get('users')
   @HttpCode(200)
@@ -39,7 +39,7 @@ export class UsersController {
     return this.usersService.findAll(paginationDto);
   }
 
-  @Delete('delete-detail/:term')
+  @Delete('delete-detail/:id')
   @HttpCode(200)
   @ApiResponse({ status: 200, description: 'Detail Deleted', type: User })
   @ApiResponse({ status: 400, description: 'Bad Request' })
@@ -49,7 +49,7 @@ export class UsersController {
   @Auth(ValidRoles.user, ValidRoles.admin)
   removeUserDetail(
     @GetUser() user: User,
-    @Param('term', ParseUUIDPipe) term: string,
+    @Param('id', ParseUUIDPipe) term: string,
   ) {
     return this.usersService.deleteUserDetail(user, term);
   }
