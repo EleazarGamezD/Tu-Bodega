@@ -1,6 +1,5 @@
 
 import  { CreateUserDto } from "./create-user.dto"; 
-import { UpdateCartDto } from '../../cart/dto/update-cart.dto';
 import { ApiProperty } from "@nestjs/swagger";
 import { IsOptional, IsString } from "class-validator";
 

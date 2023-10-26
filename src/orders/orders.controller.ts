@@ -1,7 +1,7 @@
 import { Controller, Post, Body, UseGuards, Get, Param, Query, HttpCode,  } from '@nestjs/common';
 import { CartItem } from "./../cart/entities/cart-item.entity";
 
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Order } from './entities/order.entity';
 
 
@@ -17,10 +17,8 @@ import { OrdersService } from './orders.service';
 export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 
-  @Post('place-order')
-  @ApiBearerAuth('token')
+
   @Auth(ValidRoles.admin,ValidRoles.user)
-  @HttpCode(201)
   @UseGuards(AuthGuard())
   async createOrder(
     @Body() order: Order,
@@ -29,18 +27,26 @@ export class OrdersController {
     return this.ordersService.createOrder(order, items);
   }
 
-  @Get(':term')
+  @Get(':id')
+  @HttpCode(200)
+  @ApiResponse({ status: 200, description: 'Get Order', type: Order })
+  @ApiResponse({ status: 400, description: 'Bad Request' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 403, description: 'Forbidden, Token related' })
   @ApiBearerAuth('token')
   @Auth(ValidRoles.admin, ValidRoles.user)
-  @HttpCode(200)
-  findOne(@Param('term') term: string) {
+  findOne(@Param('id') term: string) {
     return this.ordersService.findOneTerm(term);
   }
 
   @Get()
+  @HttpCode(200)
+  @ApiResponse({ status: 200, description: 'Get All Orders', type: Order })
+  @ApiResponse({ status: 400, description: 'Bad Request' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 403, description: 'Forbidden, Token related' })
   @ApiBearerAuth('token')
   @Auth(ValidRoles.admin)
-  @HttpCode(200)
   findAll(@Query() paginationDto: PaginationDto) {
     return this.ordersService.findAll(paginationDto);
   }

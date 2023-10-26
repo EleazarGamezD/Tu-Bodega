@@ -18,6 +18,7 @@ async function bootstrap() {
     .setTitle('tu bodega ')
     .setDescription('Api para manejo de pequeño Ecomerce')
     .setVersion('1.0')
+    .addTag('E-comerce')
     .addBearerAuth(
       {
         type: 'http',

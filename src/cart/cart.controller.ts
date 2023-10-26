@@ -1,7 +1,7 @@
 import { Controller, Post, Body, UseGuards, HttpCode, Patch, Delete } from '@nestjs/common';
 import { CartService } from './cart.service';
 import { CreateCartItemDto } from './dto/create-cart.dto';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Auth, GetUser } from 'src/auth/decorator';
 import { User } from 'src/auth/entities/user.entity';
 import { AuthGuard } from '@nestjs/passport';
@@ -13,6 +13,10 @@ export class CartController {
   constructor(private readonly cartService: CartService) {}
 
   @Post('add-item')
+  @ApiResponse({ status: 200, description: 'New Item Added' })
+  @ApiResponse({ status: 400, description: 'Bad Request' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 403, description: 'Forbidden, Token related' })
   @HttpCode(200)
   @ApiBearerAuth('token')
   @UseGuards(AuthGuard())
@@ -26,15 +30,23 @@ export class CartController {
 
   //TODO verificar antes de hacer el place order (si no tiene items o estos estan en 0 debe limpiar y ejecutar el place order )
   @Post('place-order')
+  @ApiResponse({ status: 201, description: 'Order Has been Created' })
+  @ApiResponse({ status: 400, description: 'Bad Request' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 403, description: 'Forbidden, Token related' })
   @ApiBearerAuth('token')
   @Auth(ValidRoles.admin, ValidRoles.user)
-  @HttpCode(200)
+  @HttpCode(201)
   @UseGuards(AuthGuard())
   async placeOrder(@GetUser() user: User) {
     return this.cartService.placeOrder(user);
   }
 
   @Delete('clear-item')
+  @ApiResponse({ status: 200, description: 'Item Deleted' })
+  @ApiResponse({ status: 400, description: 'Bad Request' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 403, description: 'Forbidden, Token related' })
   @ApiBearerAuth('token')
   @HttpCode(200)
   @UseGuards(AuthGuard())
