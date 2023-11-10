@@ -1,10 +1,33 @@
 
-import  { CreateUserDto } from "./create-user.dto"; 
+import { CreateUserDto } from "./create-user.dto";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsOptional, IsString } from "class-validator";
+import { IsArray, IsOptional, IsString } from "class-validator";
 
-export class UpdateUserDto extends CreateUserDto {
-  
+export class UpdateUserDto {
+
+  @ApiProperty({
+    description: 'User Roles [admin, user, super-user] ',
+    nullable: false,
+    minLength: 1,
+  })
+  @IsString()
+  @IsArray()
+  @IsOptional()
+  roles: string[];
+
+
+  @ApiProperty({
+    description: 'User is active or not ',
+    nullable: false,
+    minLength: 1,
+    default: true,
+  })
+  @IsOptional()
+  isActive: boolean;
+
+
+
+
 }
 
 export class UpdateUserDetailsDto {
@@ -43,4 +66,7 @@ export class UpdateUserDetailsDto {
   @IsString()
   @IsOptional()
   country: string;
+
+
+
 }

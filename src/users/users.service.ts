@@ -1,7 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { User } from 'src/auth/entities/user.entity';
-
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { UpdateUserDto } from '../auth/dto/update-user.dto';
 import {
@@ -17,7 +16,7 @@ export class UsersService {
     private readonly userDetailsRepository: UserDetailRepository,
 
     private readonly jwtService: JwtService,
-  ) {}
+  ) { }
 
   //Find All Users
   async findAll(paginationDto: PaginationDto) {
@@ -31,6 +30,37 @@ export class UsersService {
     });
     return users;
   }
+  //update user role and isActive
+  async updateUser(id, updateUserDto): Promise<User> {
+    try {
+      const user = await this.userRepository.findOne(id);
+
+      if (!user) {
+        // Handle the case where the user is not found in the database.
+        throw new NotFoundException('User not found');
+      }
+
+      // Update fields based on the information provided in updateUserDto.
+      if (updateUserDto.roles) {
+        user.roles = updateUserDto.roles;
+      }
+
+      if (updateUserDto.isActive !== undefined) {
+        user.isActive = updateUserDto.isActive;
+      }
+
+      // Save the changes to the database.
+      const updatedUser = await this.userRepository.save(user);
+
+      return updatedUser;
+    } catch (error) {
+      throw new Error('Error updating the user: ' + error.message);
+    }
+  }
+
+
+
+
 
   //delete user Detail (phone, address, country, etc )
   async deleteUserDetail(userId, detailId: string): Promise<User> {
@@ -50,7 +80,15 @@ export class UsersService {
 
   //add new Details (phone, address, country, etc )
 
-  async updateUserDetails(id,user: User, updateUserDto): Promise<User> {
+  /**
+   * Updates the user details for a given user ID.
+   *
+   * @param {number} id - The ID of the user.
+   * @param {User} user - The user object.
+   * @param {UpdateUserDto} updateUserDto - The updated user details.
+   * @return {Promise<User>} The updated user object.
+   */
+  async updateUserDetails(id, user: User, updateUserDto): Promise<User> {
     console.table(user);
     console.table(updateUserDto);
     console.table(id)
@@ -95,6 +133,13 @@ export class UsersService {
     return user;
   }
 
+  /**
+   * Adds details to a user.
+   *
+   * @param {User} user - The user to add details to.
+   * @param {object} updateUserDto - The DTO containing the updated user details.
+   * @return {Promise<User>} The user object with the added details.
+   */
   async addDetailsToUser(user: User, updateUserDto): Promise<User> {
     const { address, city, phone, country, password, ...userData } =
       updateUserDto;
@@ -110,9 +155,15 @@ export class UsersService {
     return user;
   }
 
+  /**
+   * Retrieves a user by their ID.
+   *
+   * @param {type} id - The ID of the user.
+   * @return {type} The user object.
+   */
   async getUserById(id) {
     const user = this.userRepository.findUserById(id)
-    return user 
+    return user
 
   }
 }

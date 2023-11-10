@@ -7,6 +7,11 @@ import { isUUID } from 'class-validator';
 
 @Injectable()
 export class UserRepository extends Repository<User> {
+  /**
+   * Creates a new instance of the constructor.
+   *
+   * @param {@InjectRepository(User)} repository - The repository for the User entity.
+   */
   constructor(
     @InjectRepository(User)
     repository: Repository<User>,
@@ -45,6 +50,12 @@ export class UserRepository extends Repository<User> {
     return query.getOne();
   }
 
+  /**
+   * Finds a user by their ID.
+   *
+   * @param {string} id - The ID of the user.
+   * @return {Promise<User>} A promise that resolves to the user found by the ID.
+   */
   async findUserById(id: string): Promise<User> {
     return this.findOne({ where: { id } }); // Esto buscará un usuario por su ID de manera predeterminada
   }
@@ -53,6 +64,11 @@ export class UserRepository extends Repository<User> {
 // UserDetails repository extension
 @Injectable()
 export class UserDetailRepository extends Repository<UserDetails> {
+  /**
+   * Constructor function for the given class.
+   *
+   * @param {@InjectRepository(UserDetails)} detailRepository - The repository for User Details.
+   */
   constructor(
     @InjectRepository(UserDetails)
     detailRepository: Repository<UserDetails>,
