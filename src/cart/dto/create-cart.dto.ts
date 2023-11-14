@@ -1,19 +1,20 @@
 import { ApiProperty } from "@nestjs/swagger";
-import {  IsNotEmpty, IsNumber } from "class-validator";
+import { IsNotEmpty, IsNumber, IsOptional } from "class-validator";
 
 export class CreateCartItemDto {
-    
-  @ApiProperty({   })
+
+  @ApiProperty({})
   @IsNotEmpty()
   productId: string;
 
-  @ApiProperty({   })
+  @ApiProperty({})
   @IsNumber()
   quantity: number;
 
-  @ApiProperty({   })
+  @ApiProperty({})
   @IsNotEmpty()
+  @IsOptional()
   userId: string;
-  
+
 
 }

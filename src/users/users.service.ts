@@ -7,6 +7,7 @@ import {
   UserDetailRepository,
   UserRepository,
 } from 'src/repositories/user-repository';
+import { UserDetails } from 'src/auth/entities/user-details.entity';
 
 @Injectable()
 export class UsersService {
@@ -18,38 +19,56 @@ export class UsersService {
     private readonly jwtService: JwtService,
   ) { }
 
-  //Find All Users
+  /**
+   * Find all users with pagination.
+   * 
+   * @param paginationDto - The pagination parameters for the query.
+   * @returns A list of users.
+   */
   async findAll(paginationDto: PaginationDto) {
-    const { limit, offset } = paginationDto; //we unstructured the paginationDTO to indicate the Limit and Offset
+    const { limit, offset } = paginationDto; // Extract the limit and offset from paginationDto
+
     const users = await this.userRepository.find({
-      take: limit,
-      skip: offset,
-      relations: {
-        details: true,
-      },
+      take: limit, // Set the maximum number of users to retrieve
+      skip: offset, // Skip the specified number of users
+      // relations: { details: true, } // Temporary disable relations
     });
+
     return users;
   }
-  //update user role and isActive
-  async updateUser(id, updateUserDto): Promise<User> {
+
+  /**
+   * Updates the user's role and isActive status.
+   * 
+   * @param id - The ID of the user to update.
+   * @param updateUserDto - The DTO containing the updated user information.
+   * @returns The updated user object.
+   * @throws Error if there is an error updating the user.
+   */
+  async updateUser(id: string, updateUserDto: UpdateUserDto): Promise<User> {
     try {
-      const user = await this.userRepository.findOne(id);
+      // Find the user by ID
+      const user = await this.userRepository.findUserById(id);
 
-      if (!user) {
-        // Handle the case where the user is not found in the database.
-        throw new NotFoundException('User not found');
+      // Update roles if provided in the DTO
+      if (updateUserDto.roles !== undefined) {
+        // Validate roles
+        if (
+          updateUserDto.roles !== 'admin' &&
+          updateUserDto.roles !== 'super-user' &&
+          updateUserDto.roles !== 'user'
+        ) {
+          // Split the provided roles string and assign to user.roles
+          user.roles = updateUserDto.roles.split(',');
+        }
       }
 
-      // Update fields based on the information provided in updateUserDto.
-      if (updateUserDto.roles) {
-        user.roles = updateUserDto.roles;
-      }
-
+      // Update isActive if provided in the DTO
       if (updateUserDto.isActive !== undefined) {
         user.isActive = updateUserDto.isActive;
       }
 
-      // Save the changes to the database.
+      // Save the changes to the database
       const updatedUser = await this.userRepository.save(user);
 
       return updatedUser;
@@ -62,19 +81,33 @@ export class UsersService {
 
 
 
-  //delete user Detail (phone, address, country, etc )
-  async deleteUserDetail(userId, detailId: string): Promise<User> {
-    const detailIndex = userId.details.findIndex(
-      (detail) => detail.id === detailId,
-    );
+  /**
+   * Delete a specific user detail by detailId.
+   *
+   * @param userId - The id of the user.
+   * @param detailId - The id of the detail to delete.
+   * @returns The updated User object.
+   * @throws NotFoundException if the user detail is not found.
+   */
+  async deleteUserDetail(userId: User, detailId: string): Promise<User> {
+    // Find the index of the detail in the user's details array
+    const detailIndex = userId.details.findIndex((detail) => detail.id === detailId);
 
+    // Throw an exception if the detail is not found
     if (detailIndex === -1) {
       throw new NotFoundException('User detail not found');
     }
+
+    // Remove the detail from the user's details array
     userId.details.splice(detailIndex, 1);
+
+    // Delete the detail from the user details repository
     await this.userDetailsRepository.delete(detailId);
+
+    // Save the updated user object to the user repository
     await this.userRepository.save(userId);
 
+    // Return the updated user object
     return userId;
   }
 
@@ -89,10 +122,6 @@ export class UsersService {
    * @return {Promise<User>} The updated user object.
    */
   async updateUserDetails(id, user: User, updateUserDto): Promise<User> {
-    console.table(user);
-    console.table(updateUserDto);
-    console.table(id)
-
     const userDetails = updateUserDto;
     // Actualizar los campos de roles y isActive del usuario
     user.roles = updateUserDto.roles;
@@ -140,9 +169,9 @@ export class UsersService {
    * @param {object} updateUserDto - The DTO containing the updated user details.
    * @return {Promise<User>} The user object with the added details.
    */
-  async addDetailsToUser(user: User, updateUserDto): Promise<User> {
+  async addDetailsToUser(user: User, UpdateUserDetailsDto): Promise<User> {
     const { address, city, phone, country, password, ...userData } =
-      updateUserDto;
+      UpdateUserDetailsDto;
     const newUserDetails = this.userDetailsRepository.create({
       address,
       city,

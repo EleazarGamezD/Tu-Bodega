@@ -9,11 +9,11 @@ export class UpdateUserDto {
     description: 'User Roles [admin, user, super-user] ',
     nullable: false,
     minLength: 1,
+    example: 'user, super-user',
   })
   @IsString()
-  @IsArray()
   @IsOptional()
-  roles: string[];
+  roles?: string;
 
 
   @ApiProperty({
@@ -21,12 +21,10 @@ export class UpdateUserDto {
     nullable: false,
     minLength: 1,
     default: true,
+    example: 'true',
   })
   @IsOptional()
-  isActive: boolean;
-
-
-
+  isActive?: boolean;
 
 }
 

@@ -13,6 +13,7 @@ export class CreateUserDto {
     description: 'user Email (unique) ',
     nullable: false,
     minLength: 1,
+    example: 'cI8Bh@example.com',
   })
   @IsString()
   @IsOptional()
@@ -24,6 +25,7 @@ export class CreateUserDto {
     nullable: false,
     minLength: 6,
     maxLength: 50,
+    example: '123456$$#%%aAAa',
   })
   @IsOptional()
   @IsString()
@@ -39,6 +41,7 @@ export class CreateUserDto {
     description: 'user fullName ',
     nullable: false,
     minLength: 1,
+    example: 'John Doe',
   })
   @IsString()
   @MinLength(1)
@@ -49,16 +52,18 @@ export class CreateUserDto {
     description: 'userName ',
     nullable: false,
     minLength: 1,
+    example: 'johndoe',
   })
   @IsString()
   @IsOptional()
   userName: string;
 
-  @ApiProperty({
-    description: 'list of details of the user (address, cellphone or phone)',
-    nullable: true,
-    minLength: 1,
-  })
+  // @ApiProperty({
+  //   description: 'list of details of the user (address, cellphone or phone)',
+  //   nullable: true,
+  //   minLength: 1,
+
+  // })
   @IsString({ each: true })
   @IsArray()
   @IsOptional()
@@ -68,6 +73,7 @@ export class CreateUserDto {
     description: 'user address ',
     nullable: true,
     minLength: 0,
+    example: 'Calle 123',
   })
   @IsString()
   @IsOptional()
@@ -77,6 +83,7 @@ export class CreateUserDto {
     description: 'user city ',
     nullable: true,
     minLength: 0,
+    example: 'New York',
   })
   @IsString()
   @IsOptional()
@@ -86,6 +93,7 @@ export class CreateUserDto {
     description: 'user phone ',
     nullable: true,
     minLength: 0,
+    example: '1234567890',
   })
   @IsString()
   @IsOptional()
@@ -95,6 +103,7 @@ export class CreateUserDto {
     description: 'user country ',
     nullable: true,
     minLength: 0,
+    example: 'USA',
   })
   @IsString()
   @IsOptional()
@@ -104,6 +113,7 @@ export class CreateUserDto {
     description: 'User Roles [admin, user, super-user] ',
     nullable: false,
     minLength: 1,
+    example: 'user',
   })
   @IsString()
   @IsArray()

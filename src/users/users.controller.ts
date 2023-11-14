@@ -20,6 +20,7 @@ import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { User } from 'src/auth/entities/user.entity';
 import { UpdateUserDto } from 'src/auth/dto';
 import { UpdateUserDetailsDto } from 'src/auth/dto/update-user.dto';
+import { UserDetails } from 'src/auth/entities/user-details.entity';
 
 @ApiTags('Users')
 @Controller('users')
@@ -85,7 +86,7 @@ export class UsersController {
   @Auth(ValidRoles.admin, ValidRoles.user)
   addDetailsToUser(
     @GetUser() user: User,
-    @Body() updateUserDto: UpdateUserDto,
+    @Body() updateUserDto: UpdateUserDetailsDto,
   ) {
     return this.usersService.addDetailsToUser(user, updateUserDto);
   }
@@ -93,11 +94,7 @@ export class UsersController {
   //TODO refactorizar el codigo para actualizar los datos de los usuarios
   @Patch('update-details/:id')
   @HttpCode(200)
-  @ApiResponse({
-    status: 200,
-    description: 'User has been Updated',
-    type: User,
-  })
+  @ApiResponse({ status: 200, description: 'User has been Updated', type: UserDetails, })
   @ApiResponse({ status: 400, description: 'Bad Request' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 403, description: 'Forbidden, Token related' })

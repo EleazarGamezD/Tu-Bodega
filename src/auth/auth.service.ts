@@ -28,8 +28,14 @@ export class AuthService {
     private readonly userDetailsRepository: UserDetailRepository,
 
     private readonly jwtService: JwtService,
-  ) {}
+  ) { }
 
+  /**
+   * Creates a new user using the provided CreateUserDto.
+   *
+   * @param {CreateUserDto} createUserDto - The data needed to create a new user.
+   * @return {Promise<object>} - The created user's data along with an access JWT token.
+   */
   async create(createUserDto: CreateUserDto) {
     try {
       const { address, city, phone, country, password, ...userData } =
@@ -66,6 +72,12 @@ export class AuthService {
     }
   }
 
+  /**
+   * Logs in a user.
+   *
+   * @param {LoginUserDto} loginUserDto - The user login data.
+   * @return {Promise<object>} - An object containing the logged in user and a JWT token.
+   */
   async login(loginUserDto: LoginUserDto) {  //TODO hacer cambios para devolver https Status en Validacion de Email y Password 
     try {
       const { password, email, userName } = loginUserDto;
@@ -75,22 +87,28 @@ export class AuthService {
         return {
           statusCode: HttpStatus.NO_CONTENT,
           message: 'Email Not Found ',
-        };     
+        };
 
       if (!bcrypt.compareSync(password, user.password))
-        
+
         return {
           statusCode: HttpStatus.NO_CONTENT,
           message: 'Credentials are not valid (password) ',
         };
-        
-        
-      return {  user, token: this.getJwtToken({ id: user.id }) };
+
+
+      return { user, token: this.getJwtToken({ id: user.id }) };
     } catch (error) {
       this.handleException(error);
     }
   }
 
+  /**
+   * Asynchronously checks the authentication status of a user.
+   *
+   * @param {User} user - The user object to check the authentication status for.
+   * @return {Object} - The updated user object with the JWT token added.
+   */
   async checkAuthStatus(user: User) {
     return {
       ...user,
