@@ -31,7 +31,11 @@ export class CreateUserDto {
   @IsString()
   @MinLength(6)
   @MaxLength(50)
-   password: string;
+  @Matches(/(?:(?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
+    message:
+      'The password must have a Uppercase, lowercase letter and a number',
+  })
+  password: string;
 
   @ApiProperty({
     description: 'user fullName ',

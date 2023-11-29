@@ -7,7 +7,7 @@ import { User } from 'src/auth/entities/user.entity';
 import { CartRepository } from 'src/repositories/cart-repository';
 import { OrderRepository } from 'src/repositories/order-repository';
 import { UserRepository } from 'src/repositories/user-repository';
-
+import { AuthService } from 'src/auth/auth.service';
 import { UserDetailRepository } from '../repositories/user-repository';
 
 @Injectable()

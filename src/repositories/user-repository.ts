@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserDetails } from 'src/auth/entities/user-details.entity';
 import { User } from 'src/auth/entities/user.entity';
-import { Repository} from 'typeorm';
-
+import { Repository, Like } from 'typeorm';
+import { isUUID } from 'class-validator';
 
 @Injectable()
 export class UserRepository extends Repository<User> {
