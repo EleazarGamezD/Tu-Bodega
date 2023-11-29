@@ -14,7 +14,7 @@ import { User } from './entities/user.entity';
 import { GetUser } from './decorator';
 
 import { Auth } from './decorator/auth.decorator';
-import { ApiBasicAuth, ApiBearerAuth, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth,ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ValidRoles } from './interfaces';
 import { AuthGuard } from '@nestjs/passport';
 
@@ -34,7 +34,7 @@ export class AuthController {
    * @param {User} user - The user object.
    * @return {Promise<any>} A promise that resolves with the created user.
    */
-  create(@Body() createUserDto: CreateUserDto, user: User) {
+  create(@Body() createUserDto: CreateUserDto) {
     return this.authService.create(createUserDto);
   }
 

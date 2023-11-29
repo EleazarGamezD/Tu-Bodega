@@ -72,8 +72,7 @@ export class ProductsController {
   @ApiResponse({ status: 400, description: 'Bad Request' })
   @ApiResponse({ status: 403, description: 'Forbidden, Token related' })
   update(
-    @Param('id', ParseUUIDPipe)
-    id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() updateProductDto: UpdateProductDto,
     @GetUser() user: User,
   ) {
@@ -92,9 +91,7 @@ export class ProductsController {
   @ApiResponse({ status: 400, description: 'Bad Request' })
   @ApiResponse({ status: 403, description: 'Forbidden, Token related' })
   remove(
-    @Param('id', ParseUUIDPipe)
-    id: string,
-  ) {
+    @Param('id', ParseUUIDPipe) id: string,) {
     return this.productsService.remove(id);
   }
 }

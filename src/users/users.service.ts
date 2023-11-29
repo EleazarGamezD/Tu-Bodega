@@ -7,10 +7,17 @@ import {
   UserDetailRepository,
   UserRepository,
 } from 'src/repositories/user-repository';
-import { UserDetails } from 'src/auth/entities/user-details.entity';
+
 
 @Injectable()
 export class UsersService {
+  /**
+   * Initializes a new instance of the constructor.
+   *
+   * @param {UserRepository} userRepository - The user repository.
+   * @param {UserDetailRepository} userDetailsRepository - The user details repository.
+   * @param {JwtService} jwtService - The JWT service.
+   */
   constructor(
     private readonly userRepository: UserRepository,
 
@@ -49,28 +56,15 @@ export class UsersService {
     try {
       // Find the user by ID
       const user = await this.userRepository.findUserById(id);
-
-      // Update roles if provided in the DTO
-      if (updateUserDto.roles !== undefined) {
-        // Validate roles
-        if (
-          updateUserDto.roles !== 'admin' &&
-          updateUserDto.roles !== 'super-user' &&
-          updateUserDto.roles !== 'user'
-        ) {
-          // Split the provided roles string and assign to user.roles
-          user.roles = updateUserDto.roles.split(',');
-        }
-      }
+      // Split the provided roles string and assign to user.roles
+      user.roles = updateUserDto.roles.split(',');
 
       // Update isActive if provided in the DTO
       if (updateUserDto.isActive !== undefined) {
         user.isActive = updateUserDto.isActive;
       }
-
       // Save the changes to the database
       const updatedUser = await this.userRepository.save(user);
-
       return updatedUser;
     } catch (error) {
       throw new Error('Error updating the user: ' + error.message);

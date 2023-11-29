@@ -51,5 +51,5 @@ export class OrdersController {
     return this.ordersService.findAll(paginationDto);
   }
 
-  //TODO agregar todos los api response para el swagger
+  
 }
