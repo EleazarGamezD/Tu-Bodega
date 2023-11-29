@@ -51,17 +51,11 @@ export class UsersService {
       const user = await this.userRepository.findUserById(id);
 
       // Update roles if provided in the DTO
-      if (updateUserDto.roles !== undefined) {
-        // Validate roles
-        if (
-          updateUserDto.roles !== 'admin' &&
-          updateUserDto.roles !== 'super-user' &&
-          updateUserDto.roles !== 'user'
-        ) {
-          // Split the provided roles string and assign to user.roles
-          user.roles = updateUserDto.roles.split(',');
-        }
-      }
+
+      // Split the provided roles string and assign to user.roles
+      user.roles = updateUserDto.roles.split(',');
+
+
 
       // Update isActive if provided in the DTO
       if (updateUserDto.isActive !== undefined) {
