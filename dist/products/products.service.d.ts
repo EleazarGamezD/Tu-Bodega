@@ -1,0 +1,78 @@
+import { CreateProductDto } from './dto/create-product.dto';
+import { UpdateProductDto } from './dto/update-product.dto';
+import { Product } from './entities/product.entity';
+import { Repository } from 'typeorm';
+import { PaginationDto } from 'src/common/dtos/pagination.dto';
+import { User } from 'src/auth/entities/user.entity';
+export declare class ProductsService {
+    private readonly productRepository;
+    private readonly logger;
+    constructor(productRepository: Repository<Product>);
+    private readonly productImageRepository;
+    private readonly dataSource;
+    create(createProductDto: CreateProductDto, user: User): Promise<{
+        images: string[];
+        id: string;
+        title: string;
+        price: number;
+        description: string;
+        slug?: string;
+        stock: number;
+        sizes: string[];
+        gender: string;
+        tags: string[];
+        user: User;
+        orderItems: import("../orders/entities/order-item.entity").OrderItem[];
+        cartItems: import("../cart/entities/cart-item.entity").CartItem[];
+    }>;
+    findAll(paginationDto: PaginationDto): Promise<{
+        images: string[];
+        id: string;
+        title: string;
+        price: number;
+        description: string;
+        slug?: string;
+        stock: number;
+        sizes: string[];
+        gender: string;
+        tags: string[];
+        user: User;
+        orderItems: import("../orders/entities/order-item.entity").OrderItem[];
+        cartItems: import("../cart/entities/cart-item.entity").CartItem[];
+    }[]>;
+    findOne(term: string): Promise<Product>;
+    findOnePlain(term: string): Promise<{
+        images: string[];
+        id: string;
+        title: string;
+        price: number;
+        description: string;
+        slug?: string;
+        stock: number;
+        sizes: string[];
+        gender: string;
+        tags: string[];
+        user: User;
+        orderItems: import("../orders/entities/order-item.entity").OrderItem[];
+        cartItems: import("../cart/entities/cart-item.entity").CartItem[];
+    }>;
+    update(id: string, updateProductDto: UpdateProductDto, user: User): Promise<{
+        images: string[];
+        id: string;
+        title: string;
+        price: number;
+        description: string;
+        slug?: string;
+        stock: number;
+        sizes: string[];
+        gender: string;
+        tags: string[];
+        user: User;
+        orderItems: import("../orders/entities/order-item.entity").OrderItem[];
+        cartItems: import("../cart/entities/cart-item.entity").CartItem[];
+    }>;
+    remove(id: string): Promise<string>;
+    private handleException;
+    deleteAllProducts(): Promise<import("typeorm").DeleteResult>;
+    private readonly imageBaseUrl;
+}
