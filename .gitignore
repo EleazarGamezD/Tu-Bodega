@@ -1,7 +1,7 @@
 # compiled output
 /dist
 /node_modules
-#variables de entorno 
+#variables de entorno
 .env
 # Logs
 logs
@@ -39,6 +39,7 @@ lerna-debug.log*
 
 /postgres
 
-# #Folders 
+# #Folders
 
-# /static/products 
+# /static/products
+.vercel
