@@ -2,7 +2,6 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe, Logger } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { SwaggerTheme } from 'swagger-themes';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
@@ -34,11 +33,6 @@ async function bootstrap() {
   ;
 
   const document = SwaggerModule.createDocument(app, config);
-  const theme = new SwaggerTheme('v3');
-  const options = {
-    explorer: true,
-    customCss: theme.getBuffer('dark')
-  };
 
   SwaggerModule.setup('/', app, document, {
     customCssUrl: 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.10.5/swagger-ui.min.css',   //? se coloca '/' para que swagger sea la web principal ! 
@@ -48,8 +42,6 @@ async function bootstrap() {
     ],
     swaggerOptions: {
       persistAuthorization: true,
-      explorer: true,
-      customCss: theme.getBuffer('dark')
     },
   });
   app.useGlobalPipes(
